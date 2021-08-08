@@ -1,7 +1,6 @@
 package customerManagementDao;
 import customerManagement.Customer;
 import dbUtil.JDBCTemplate;
-
 import java.sql.*;
 import java.util.ArrayList;
 public class CustomerDAOImplement implements CustomerDAO {
