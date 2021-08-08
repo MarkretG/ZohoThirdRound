@@ -1,9 +1,7 @@
-package accountManagementDao;
+package persistence;
 import accountManagement.Account;
-import dbUtil.JDBCTemplate;
 import java.sql.*;
 import java.util.ArrayList;
-
 public class AccountDAOImplement implements AccountDAO {
     @Override
     public void addAccount(Account account)throws SQLException {
@@ -16,6 +14,24 @@ public class AccountDAOImplement implements AccountDAO {
             preparedStatement.executeUpdate();
         }
 
+    }
+
+    @Override
+    public ArrayList<Account> selectAccount(long customer_id) throws SQLException {
+        ArrayList<Account> accounts=new ArrayList<>();
+        Connection connection =JDBCTemplate.getConnection();
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("select *from  account_info where customer_id=customer_id")) {
+            while (resultSet.next()) {
+                Account account1=new Account();
+                account1.setCustomer_id(resultSet.getLong(1));
+                account1.setAccount_id(resultSet.getLong(2));
+                account1.setBalance(resultSet.getDouble(3));
+                accounts.add(account1);
+            }
+
+        }
+        return accounts;
     }
 
     @Override
