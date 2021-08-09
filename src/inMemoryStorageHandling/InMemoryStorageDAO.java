@@ -14,8 +14,7 @@ public interface InMemoryStorageDAO {
 
     void AddNewAccountForExistingCustomer() throws SQLException;
 
-    HashMap<Long,Account> getAccountsInfo();
+    HashMap<Long, Account> getAccountsInfo();
 
-    void initialiseHashMap()throws SQLException;
-
+    void initialiseHashMap() throws SQLException;
 }
