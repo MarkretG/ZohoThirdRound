@@ -9,19 +9,19 @@ public class  BankingManagementSystem {
         System.out.println("welcome to banking management system");
         InMemoryStorageDAO inMemoryStorageDAO=Controller.getInMemoryStorageDAOHandler();
         inMemoryStorageDAO.initialiseHashMap();
-        System.out.println("3.New Customer\n2.Add new account for existing customer\n1.get accounts info for given customer_id\n4.exit");
+        System.out.println("1.New Customer\n2.Add new account for existing customer\n3.get accounts info for given customer_id\n4.exit");
         while (true)
         {
             int choice=Controller.getInputHandler().getNextIntFromUser();
             switch (choice)
             {
-                case 3:
+                case 1:
                     Controller.getInMemoryStorageDAOHandler().handleNewCustomer();
                     break;
                 case 2:
                     Controller.getInMemoryStorageDAOHandler().AddNewAccountForExistingCustomer();
                     break;
-                case 1:
+                case 3:
                     HashMap<Long, Account> accountInfo = Controller.getInMemoryStorageDAOHandler().getAccountsInfo();
                     System.out.println(accountInfo.toString());
                     break;
