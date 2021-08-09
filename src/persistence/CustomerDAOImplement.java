@@ -4,22 +4,28 @@ import java.sql.*;
 import java.util.ArrayList;
 public class CustomerDAOImplement implements CustomerDAO {
     @Override
-    public void addCustomer(Customer customer) throws SQLException {
-        Connection con = JDBCTemplate.getConnection();
+    public long addCustomer(Customer customer) throws SQLException{
+        long key=-1L;
+        Connection connection = DBUtil.getConnection();
         String query="insert into customer_info(name,age,phone) values(?,?,?,?)";
-        try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query,PreparedStatement.RETURN_GENERATED_KEYS);
+        ResultSet resultSet=preparedStatement.getGeneratedKeys()) {
             //preparedStatement.setLong(1, customer.getCustomer_id());
             preparedStatement.setString(2, customer.getName());
             preparedStatement.setInt(4, customer.getAge());
             preparedStatement.setLong(5, customer.getPhone());
             preparedStatement.executeUpdate();
+            if (resultSet.next()) {
+                key = resultSet.getLong(1);
+            }
         }
+        return key;
     }
 
     @Override
-    public ArrayList<Customer> selectCustomers(long customer_id) throws SQLException {
+    public ArrayList<Customer> selectCustomers(long customer_id) throws SQLException{
         ArrayList<Customer> customers=new ArrayList<>();
-        Connection connection =JDBCTemplate.getConnection();
+        Connection connection = DBUtil.getConnection();
         String query="select customer_id,name from customer_info where customer_id=customer_id";
         try ( PreparedStatement preparedStatement = connection.prepareStatement(query);
               ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -36,9 +42,9 @@ public class CustomerDAOImplement implements CustomerDAO {
 
 
     @Override
-    public ArrayList<Customer> selectAllCustomers() throws SQLException {
+    public ArrayList<Customer> selectAllCustomers() throws SQLException{
         ArrayList<Customer> customers=new ArrayList<>();
-        Connection connection =JDBCTemplate.getConnection();
+        Connection connection = DBUtil.getConnection();
         String query="select customer_id,name from customer_info";
         try ( PreparedStatement preparedStatement = connection.prepareStatement(query);
               ResultSet resultSet = preparedStatement.executeQuery()) {
