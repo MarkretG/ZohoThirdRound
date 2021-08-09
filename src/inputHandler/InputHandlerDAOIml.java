@@ -2,6 +2,8 @@ package inputHandler;
 import bankingManagement.Account;
 import bankingManagement.Customer;
 public class InputHandlerDAOIml implements InputHandlerDAO{
+    long customerId;
+    int choice;
     @Override
     public Customer getCustomerInfo() {
         //System.out.println("Enter customer_id");
@@ -39,8 +41,14 @@ public class InputHandlerDAOIml implements InputHandlerDAO{
 
     @Override
     public long getNextLongFromUser() {
-        long customer_id=scanner.nextLong();
-        return customer_id;
+        customerId=scanner.nextLong();
+        return customerId;
+    }
+
+    @Override
+    public int getNextIntFromUser() {
+        choice=scanner.nextInt();
+        return choice;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package inMemomyStorageHandling;
+package inMemoryStorageHandling;
 import bankingManagement.Customer;
 import bankingManagement.Account;
 import java.util.ArrayList;

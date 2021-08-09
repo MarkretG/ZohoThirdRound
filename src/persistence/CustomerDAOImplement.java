@@ -8,7 +8,7 @@ public class CustomerDAOImplement implements CustomerDAO {
         Connection con = JDBCTemplate.getConnection();
         String query="insert into customer_info(name,age,phone) values(?,?,?,?)";
         try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
-            preparedStatement.setLong(1, customer.getCustomer_id());
+            //preparedStatement.setLong(1, customer.getCustomer_id());
             preparedStatement.setString(2, customer.getName());
             preparedStatement.setInt(4, customer.getAge());
             preparedStatement.setLong(5, customer.getPhone());

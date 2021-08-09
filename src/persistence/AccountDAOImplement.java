@@ -1,5 +1,5 @@
 package persistence;
-import accountManagement.Account;
+import bankingManagement.Account;
 import java.sql.*;
 import java.util.ArrayList;
 public class AccountDAOImplement implements AccountDAO {
