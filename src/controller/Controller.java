@@ -2,11 +2,11 @@ package controller;
 import persistence.CustomerDAO;
 import persistence.AccountDAO;
 import inputHandler.InputHandlerDAO;
-import bankingSystem.InMemoryStorageDAO;
 import persistence.CustomerDAOImplement;
 import persistence.AccountDAOImplement;
-import bankingSystem.InMemoryStorageDAOImplement;
 import inputHandler.InputHandlerDAOIml;
+import inMemoryStorageHandling.inMemoryStorageDAO;
+
 public class Controller {
     public static CustomerDAO getCustomerPersistenceDaoHandler()
     {

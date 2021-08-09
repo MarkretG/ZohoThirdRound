@@ -17,7 +17,7 @@ public class AccountDAOImplement implements AccountDAO {
     }
 
     @Override
-    public ArrayList<Account> selectAccount(long customer_id) throws SQLException {
+    public ArrayList<Account> selectAccounts(long customer_id) throws SQLException {
         ArrayList<Account> accounts=new ArrayList<>();
         Connection connection =JDBCTemplate.getConnection();
         try (Statement statement = connection.createStatement();
@@ -35,7 +35,7 @@ public class AccountDAOImplement implements AccountDAO {
     }
 
     @Override
-    public ArrayList<Account> selectAllAccount()throws SQLException{
+    public ArrayList<Account> selectAllAccounts()throws SQLException{
         ArrayList<Account> accounts=new ArrayList<>();
         Connection connection =JDBCTemplate.getConnection();
         try (Statement statement = connection.createStatement();

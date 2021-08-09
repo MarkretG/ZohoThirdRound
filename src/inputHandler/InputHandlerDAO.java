@@ -1,10 +1,11 @@
 package inputHandler;
-import customerManagement.Customer;
-import accountManagement.Account;
+import bankingManagement.Customer;
+import bankingManagement.Account;
 import java.util.Scanner;
 public interface InputHandlerDAO {
     Scanner scanner=new Scanner(System.in);
-    Customer getCustomersInfo();
-    Account getAccountsInfo();
+    Customer getCustomerInfo();
+    Account getAccountInfo();
+    long getNextLongFromUser();
     void closeScanner();
 }

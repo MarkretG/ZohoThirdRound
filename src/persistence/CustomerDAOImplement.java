@@ -1,5 +1,5 @@
 package persistence;
-import customerManagement.Customer;
+import bankingManagement.Customer;
 import java.sql.*;
 import java.util.ArrayList;
 public class CustomerDAOImplement implements CustomerDAO {
@@ -17,7 +17,7 @@ public class CustomerDAOImplement implements CustomerDAO {
     }
 
     @Override
-    public ArrayList<Customer> selectCustomer(long customer_id) throws SQLException {
+    public ArrayList<Customer> selectCustomers(long customer_id) throws SQLException {
         ArrayList<Customer> customers=new ArrayList<>();
         Connection connection =JDBCTemplate.getConnection();
         String query="select customer_id,name from customer_info where customer_id=customer_id";
@@ -36,7 +36,7 @@ public class CustomerDAOImplement implements CustomerDAO {
 
 
     @Override
-    public ArrayList<Customer> selectAllCustomer() throws SQLException {
+    public ArrayList<Customer> selectAllCustomers() throws SQLException {
         ArrayList<Customer> customers=new ArrayList<>();
         Connection connection =JDBCTemplate.getConnection();
         String query="select customer_id,name from customer_info";

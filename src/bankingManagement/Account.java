@@ -1,4 +1,4 @@
-package accountManagement;
+package bankingManagement;
 public class Account {
     private long customer_id;
     private long account_id;

@@ -1,4 +1,4 @@
-package customerManagement;
+package bankingManagement;
 public class Customer {
     private long customer_id;
     private  String name;
@@ -47,4 +47,5 @@ public class Customer {
         this.phone = phone;
     }
 }
+
 

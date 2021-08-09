@@ -1,9 +1,9 @@
 package inputHandler;
-import accountManagement.Account;
-import customerManagement.Customer;
+import bankingManagement.Account;
+import bankingManagement.Customer;
 public class InputHandlerDAOIml implements InputHandlerDAO{
     @Override
-    public Customer getCustomersInfo() {
+    public Customer getCustomerInfo() {
         //System.out.println("Enter customer_id");
         //long customer_id = scanner.nextLong();
         System.out.println("enter name");
@@ -23,7 +23,7 @@ public class InputHandlerDAOIml implements InputHandlerDAO{
     }
 
     @Override
-    public Account getAccountsInfo() {
+    public Account getAccountInfo() {
         System.out.println("enter customer_id");
         long customer_id = scanner.nextLong();
         System.out.println("enter account Id");
@@ -35,6 +35,12 @@ public class InputHandlerDAOIml implements InputHandlerDAO{
         account.setAccount_id(account_id);
         account.setBalance(balance);
         return account;
+    }
+
+    @Override
+    public long getNextLongFromUser() {
+        long customer_id=scanner.nextLong();
+        return customer_id;
     }
 
     @Override

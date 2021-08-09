@@ -1,13 +1,13 @@
-package bankingSystem;
-import accountManagement.Account;
-import customerManagement.Customer;
+package inMemomyStorageHandling;
+import bankingManagement.Account;
+import bankingManagement.Customer;
 import java.util.ArrayList;
 import java.util.HashMap;
 public class InMemoryStorageDAOImplement implements InMemoryStorageDAO {
     HashMap<Long,String> customerHashMap=new HashMap<>();
     HashMap<Long,HashMap<Long,Account>> accountInfoHashMap=new HashMap<>();
     @Override
-    public void storeCustomerInCustomerHashMap(ArrayList<Customer> customers) {
+    public void storeCustomersInCustomerHashMap(ArrayList<Customer> customers) {
         for (Customer customer:customers)
         {
             customerHashMap.put(customer.getCustomer_id(),customer.getName());
@@ -16,7 +16,7 @@ public class InMemoryStorageDAOImplement implements InMemoryStorageDAO {
     }
 
     @Override
-    public void storeAccountInAccountHashMap(ArrayList<Account> accounts) {
+    public void storeAccountsInAccountHashMap(ArrayList<Account> accounts) {
         for (Account account:accounts)
         {
             HashMap accountHashMap = accountInfoHashMap.get(account.getCustomer_id());
@@ -30,7 +30,8 @@ public class InMemoryStorageDAOImplement implements InMemoryStorageDAO {
     }
 
     @Override
-    public HashMap<Long, Account> getAccountInfo(long customer_id) {
+    public HashMap<Long, Account> getAccountsInfo(long customer_id) {
         return accountInfoHashMap.get(customer_id);
     }
 }
+

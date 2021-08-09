@@ -1,9 +1,9 @@
-package bankingSystem;
+package bankingManagement;
 import persistence.CustomerDAO;
 import persistence.AccountDAO;
 import inputHandler.InputHandlerDAO;
-import accountManagement.Account;
-import customerManagement.Customer;
+import bankingManagement.Account;
+import bankingManagement.Customer;
 import controller.Controller;
 import persistence.JDBCTemplate;
 import java.sql.SQLException;
@@ -57,3 +57,4 @@ public class  BankingManagementSystem {
         }
     }
 }
+
