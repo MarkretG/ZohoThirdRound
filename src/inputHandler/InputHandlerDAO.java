@@ -7,5 +7,6 @@ public interface InputHandlerDAO {
     Customer getCustomerInfo();
     Account getAccountInfo();
     long getNextLongFromUser();
+    int getNextIntFromUser();
     void closeScanner();
 }

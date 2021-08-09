@@ -2,17 +2,17 @@ package persistence;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-public class JDBCTemplate {
-    private  static Connection connection=null;
-    public static Connection getConnection() {
+public class DBUtil {
+    private static Connection connection=null;
+    public static Connection getConnection(){
         if (connection != null)
         {
             return connection;
         }
         try {
-            String url = "jdbc:mysql://localhost/info";
+            String url = "jdbc:mysql://localhost:3306/info";
             String userName = "root";
-            String password = "Root@123";
+            String password = "Password@1";
             // load the Driver Class
             Class.forName("com.mysql.cj.jdbc.Driver");
             // create the connection now
@@ -38,4 +38,3 @@ public class JDBCTemplate {
         }
     }
 }
-

@@ -5,8 +5,8 @@ import inputHandler.InputHandlerDAO;
 import persistence.CustomerDAOImplement;
 import persistence.AccountDAOImplement;
 import inputHandler.InputHandlerDAOIml;
-import inMemoryStorageHandling.inMemoryStorageDAO;
-
+import inMemoryStorageHandling.InMemoryStorageDAO;
+import inMemoryStorageHandling.InMemoryStorageDAOImplement;
 public class Controller {
     public static CustomerDAO getCustomerPersistenceDaoHandler()
     {
@@ -20,7 +20,7 @@ public class Controller {
     {
         return new InputHandlerDAOIml();
     }
-    public static InMemoryStorageDAO getBankingDaoHandler()
+    public static InMemoryStorageDAO getInMemoryStorageDAOHandler()
     {
         return new InMemoryStorageDAOImplement();
     }
