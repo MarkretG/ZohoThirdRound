@@ -5,7 +5,7 @@ import persistence.DBUtil;
 import java.sql.SQLException;
 import java.util.HashMap;
 public class  BankingManagementSystem {
-    public static void main(String[] args) throws SQLException,ClassNotFoundException{
+    public static void main(String[] args) throws SQLException{
         InMemoryStorageDAO inMemoryStorageDAO=Controller.getInMemoryStorageDAOHandler();
         inMemoryStorageDAO.initialiseHashMap();
         System.out.println("welcome to banking management system");
