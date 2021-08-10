@@ -2,7 +2,6 @@ package inMemoryStorageHandling;
 import bankingManagement.Account;
 import bankingManagement.Customer;
 import controller.Controller;
-import inputHandler.InputHandlerDAO;
 import persistence.AccountDAO;
 import persistence.CustomerDAO;
 import java.sql.SQLException;
@@ -11,7 +10,6 @@ import java.util.HashMap;
 public class InMemoryStorageDAOImpl implements InMemoryStorageDAO {
     CustomerDAO customerDAO=Controller.getCustomerPersistenceDaoHandler();
     AccountDAO accountDAO=Controller.getAccountPersistenceDaoHandler();
-    InputHandlerDAO inputHandlerDAO=Controller.getInputHandler();
 
 
     private HashMap<Long,String> customerHashMap=new HashMap<>();

@@ -1,11 +1,12 @@
 package inputHandler;
 import bankingManagement.Account;
 import bankingManagement.Customer;
-public class InputHandlerDAOImpl implements InputHandlerDAO{
+import java.util.Scanner;
+public class InputHandler {
+    private Scanner scanner=new Scanner(System.in);
     long customerId;
     int choice;
-    @Override
-    public Customer getCustomerInfo() {
+    public  Customer getCustomerInfo() {
         //System.out.println("Enter customer_id");
         //long customer_id = scanner.nextLong();
         System.out.println("enter name");
@@ -23,8 +24,6 @@ public class InputHandlerDAOImpl implements InputHandlerDAO{
         return customer;
 
     }
-
-    @Override
     public Account getAccountInfo() {
         //System.out.println("enter customer_id");
         //long customer_id = scanner.nextLong();
@@ -39,20 +38,16 @@ public class InputHandlerDAOImpl implements InputHandlerDAO{
         return account;
     }
 
-    @Override
     public long getId() {
         System.out.println("enter customer_id");
         customerId=scanner.nextLong();
         return customerId;
     }
 
-    @Override
     public int getChoice() {
         choice=scanner.nextInt();
         return choice;
     }
-
-    @Override
     public void closeScanner() {
         scanner.close();
     }
