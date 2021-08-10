@@ -13,7 +13,7 @@ public class DBUtil {
         try {
             String url = "jdbc:mysql://localhost:3306/info";
             String userName = "root";
-            String password = "Password@1";
+            String password = "Root@123";
             // load the Driver Class
             Class.forName("com.mysql.cj.jdbc.Driver");
             // create the connection now

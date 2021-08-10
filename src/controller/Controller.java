@@ -8,20 +8,36 @@ import inputHandler.InputHandlerDAOIml;
 import inMemoryStorageHandling.InMemoryStorageDAO;
 import inMemoryStorageHandling.InMemoryStorageDAOImplement;
 public class Controller {
+    private static CustomerDAO customerDAO=null;
+    private static AccountDAO accountDAO=null;
+    private static InputHandlerDAO inputHandlerDAO=null;
+    private static InMemoryStorageDAO inMemoryStorageDAO=null;
     public static CustomerDAO getCustomerPersistenceDaoHandler()
     {
-        return new CustomerDAOImplement();
+        if (customerDAO==null) {
+            return new CustomerDAOImplement();
+        }
+        return customerDAO;
     }
     public static AccountDAO getAccountPersistenceDaoHandler()
     {
-        return  new AccountDAOImplement();
+        if (accountDAO==null) {
+            return new AccountDAOImplement();
+        }
+        return accountDAO;
     }
     public static InputHandlerDAO getInputHandler()
     {
-        return new InputHandlerDAOIml();
+        if (inputHandlerDAO==null) {
+            return new InputHandlerDAOIml();
+        }
+        return inputHandlerDAO;
     }
     public static InMemoryStorageDAO getInMemoryStorageDAOHandler()
     {
-        return new InMemoryStorageDAOImplement();
+        if (inMemoryStorageDAO==null) {
+            return new InMemoryStorageDAOImplement();
+        }
+        return inMemoryStorageDAO;
     }
 }
