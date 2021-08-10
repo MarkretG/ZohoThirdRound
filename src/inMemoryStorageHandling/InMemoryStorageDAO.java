@@ -1,7 +1,6 @@
 package inMemoryStorageHandling;
 import bankingManagement.Customer;
 import bankingManagement.Account;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 public interface InMemoryStorageDAO {

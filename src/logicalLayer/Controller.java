@@ -2,6 +2,7 @@ package logicalLayer;
 import persistence.CustomerDAO;
 import persistence.AccountDAO;
 import inMemoryStorageHandling.InMemoryStorageDAO;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,16 +11,20 @@ public class Controller {
     static Properties properties = new Properties();
     static {
         try {
-            FileReader reader = new FileReader("controller.properties");
+            String path=System.getProperty("user.dir");
+            FileReader reader = new FileReader(path+File.separator+"src"+File.separator+"controller.properties");
             properties.load(reader);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException e)
+        {
+            System.out.println(e.getMessage());
         }
         catch (IOException i)
         {
-            i.printStackTrace();
+            System.out.println(i.getMessage());
         }
     }
+
+
 
     private static CustomerDAO customerDAO=null;
     private static AccountDAO accountDAO=null;
@@ -30,21 +35,24 @@ public class Controller {
             try {
                 customerDAO=(CustomerDAO)Class.forName(className).newInstance();
             } catch (InstantiationException | IllegalAccessException |ClassNotFoundException  e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
+
             return customerDAO;
         }
         return customerDAO;
     }
     public static synchronized AccountDAO getAccountPersistenceDAOHandler() {
         if (accountDAO==null) {
-            String className=(String) properties.get("accountDAO");
+           String className=(String) properties.get("accountDAO");
             try {
                 accountDAO=(AccountDAO)Class.forName(className).newInstance();
             }
             catch (InstantiationException |IllegalAccessException |ClassNotFoundException  e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
+
             }
+
             return accountDAO;
         }
         return accountDAO;
@@ -56,7 +64,7 @@ public class Controller {
                 inMemoryStorageDAO=(InMemoryStorageDAO) Class.forName(className).newInstance();
             }
             catch (InstantiationException |IllegalAccessException |ClassNotFoundException  e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
             return inMemoryStorageDAO;
         }

@@ -4,7 +4,6 @@ import bankingManagement.Customer;
 import java.util.ArrayList;
 import java.util.HashMap;
 public class InMemoryStorageDAOImpl implements InMemoryStorageDAO {
-
     private HashMap<Long,String> customerHashMap=new HashMap<>();
     private HashMap<Long,HashMap<Long,Account>> accountInfoHashMap=new HashMap<>();
 

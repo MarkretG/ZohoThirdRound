@@ -12,15 +12,15 @@ public class DBUtil {
         try {
             String url = "jdbc:mysql://localhost:3306/info";
             String userName = "root";
-            String password = "Root@123";
+            String password = "Password@1";
             // load the Driver Class
             Class.forName("com.mysql.cj.jdbc.Driver");
             // create the connection now
             connection = DriverManager.getConnection(url, userName,password);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         return connection;
