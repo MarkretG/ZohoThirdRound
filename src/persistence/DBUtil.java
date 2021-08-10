@@ -1,7 +1,6 @@
 package persistence;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Driver;
 import java.sql.SQLException;
 public class DBUtil {
     private static Connection connection=null;
@@ -30,7 +29,6 @@ public class DBUtil {
         if (connection!=null)
         {
             try {
-
                 connection.close();
             }
             catch (SQLException e)

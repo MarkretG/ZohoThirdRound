@@ -2,7 +2,7 @@ package persistence;
 import bankingManagement.Customer;
 import java.sql.*;
 import java.util.ArrayList;
-public class CustomerDAOImplement implements CustomerDAO {
+public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public long addCustomer(Customer customer) throws SQLException{
         long key=-1L;

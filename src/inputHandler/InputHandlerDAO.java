@@ -6,7 +6,7 @@ public interface InputHandlerDAO {
     Scanner scanner=new Scanner(System.in);
     Customer getCustomerInfo();
     Account getAccountInfo();
-    long getNextLongFromUser();
-    int getNextIntFromUser();
+    long getId();
+    int getChoice();
     void closeScanner();
 }

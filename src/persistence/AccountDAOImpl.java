@@ -2,7 +2,7 @@ package persistence;
 import bankingManagement.Account;
 import java.sql.*;
 import java.util.ArrayList;
-public class AccountDAOImplement implements AccountDAO {
+public class AccountDAOImpl implements AccountDAO {
     @Override
     public void addAccount(Account account,long customer_id)throws SQLException{
         Connection connection= DBUtil.getConnection();
