@@ -1,4 +1,4 @@
-package inputHandler;
+package ioHandler;
 import bankingManagement.Account;
 import bankingManagement.Customer;
 import java.util.Scanner;

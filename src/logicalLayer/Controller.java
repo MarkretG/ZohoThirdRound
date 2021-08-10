@@ -1,4 +1,4 @@
-package controller;
+package logicalLayer;
 import persistence.CustomerDAO;
 import persistence.AccountDAO;
 import persistence.CustomerDAOImpl;
