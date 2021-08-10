@@ -12,31 +12,31 @@ public class Controller {
     private static AccountDAO accountDAO=null;
     private static InputHandlerDAO inputHandlerDAO=null;
     private static InMemoryStorageDAO inMemoryStorageDAO=null;
-    public static CustomerDAO getCustomerPersistenceDaoHandler()
+    public static synchronized CustomerDAO getCustomerPersistenceDaoHandler()
     {
         if (customerDAO==null) {
-            return new CustomerDAOImplement();
+            customerDAO= new CustomerDAOImplement();
         }
         return customerDAO;
     }
-    public static AccountDAO getAccountPersistenceDaoHandler()
+    public static synchronized AccountDAO getAccountPersistenceDaoHandler()
     {
         if (accountDAO==null) {
-            return new AccountDAOImplement();
+            accountDAO= new AccountDAOImplement();
         }
         return accountDAO;
     }
-    public static InputHandlerDAO getInputHandler()
+    public static synchronized InputHandlerDAO getInputHandler()
     {
         if (inputHandlerDAO==null) {
-            return new InputHandlerDAOIml();
+            inputHandlerDAO= new InputHandlerDAOIml();
         }
         return inputHandlerDAO;
     }
-    public static InMemoryStorageDAO getInMemoryStorageDAOHandler()
+    public static synchronized InMemoryStorageDAO getInMemoryStorageDAOHandler()
     {
         if (inMemoryStorageDAO==null) {
-            return new InMemoryStorageDAOImplement();
+            inMemoryStorageDAO=new InMemoryStorageDAOImplement();
         }
         return inMemoryStorageDAO;
     }
