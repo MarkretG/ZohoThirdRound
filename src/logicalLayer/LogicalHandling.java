@@ -9,6 +9,10 @@ public class LogicalHandling {
     CustomerDAO customerDAO=Controller.getCustomerPersistenceDAOHandler();
     AccountDAO accountDAO=Controller.getAccountPersistenceDAOHandler();
     InMemoryStorageDAO inMemoryStorageDAO=Controller.getInMemoryStorageDAOHandler();
+
+    public LogicalHandling() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+    }
+
     public void initialiseHashMap()throws SQLException {
         //initially store customer table and account table in hashmap
         inMemoryStorageDAO.storeCustomersInCustomerHashMap(customerDAO.selectAllCustomers());
