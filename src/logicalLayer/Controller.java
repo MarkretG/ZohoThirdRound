@@ -24,28 +24,42 @@ public class Controller {
     private static CustomerDAO customerDAO=null;
     private static AccountDAO accountDAO=null;
     private static InMemoryStorageDAO inMemoryStorageDAO=null;
-    public static synchronized CustomerDAO getCustomerPersistenceDAOHandler() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static synchronized CustomerDAO getCustomerPersistenceDAOHandler()  {
         if (customerDAO==null) {
-            String className=(String) properties.get(customerDAO);
-            customerDAO=(CustomerDAO)Class.forName(className).newInstance();
+            String className=(String)properties.get("customerDAO");
+            try {
+                customerDAO=(CustomerDAO)Class.forName(className).newInstance();
+            } catch (InstantiationException | IllegalAccessException |ClassNotFoundException  e) {
+                e.printStackTrace();
+            }
             return customerDAO;
         }
         return customerDAO;
     }
-    public static synchronized AccountDAO getAccountPersistenceDAOHandler() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static synchronized AccountDAO getAccountPersistenceDAOHandler() {
         if (accountDAO==null) {
-            String className=(String) properties.get(accountDAO);
-            accountDAO=(AccountDAO)Class.forName(className).newInstance();
+            String className=(String) properties.get("accountDAO");
+            try {
+                accountDAO=(AccountDAO)Class.forName(className).newInstance();
+            }
+            catch (InstantiationException |IllegalAccessException |ClassNotFoundException  e) {
+                e.printStackTrace();
+            }
             return accountDAO;
         }
         return accountDAO;
     }
-    public static synchronized InMemoryStorageDAO getInMemoryStorageDAOHandler() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static synchronized InMemoryStorageDAO getInMemoryStorageDAOHandler()  {
         if (inMemoryStorageDAO==null) {
-            String className=(String) properties.get(inMemoryStorageDAO);
-            inMemoryStorageDAO=(InMemoryStorageDAO) Class.forName(className).newInstance();
+            String className=(String) properties.get("inMemoryStorageDAO");
+            try {
+                inMemoryStorageDAO=(InMemoryStorageDAO) Class.forName(className).newInstance();
+            }
+            catch (InstantiationException |IllegalAccessException |ClassNotFoundException  e) {
+                e.printStackTrace();
+            }
             return inMemoryStorageDAO;
         }
-        return inMemoryStorageDAO;
+            return inMemoryStorageDAO;
     }
 }
