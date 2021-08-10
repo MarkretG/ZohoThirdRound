@@ -6,9 +6,9 @@ import persistence.AccountDAO;
 import persistence.CustomerDAO;
 import java.sql.SQLException;
 public class LogicalHandling {
-    CustomerDAO customerDAO=Controller.getCustomerPersistenceDAOHandler();
-    AccountDAO accountDAO=Controller.getAccountPersistenceDAOHandler();
-    InMemoryStorageDAO inMemoryStorageDAO=Controller.getInMemoryStorageDAOHandler();
+      CustomerDAO customerDAO=Controller.getCustomerPersistenceDAOHandler();
+      AccountDAO accountDAO=Controller.getAccountPersistenceDAOHandler();
+      InMemoryStorageDAO inMemoryStorageDAO=Controller.getInMemoryStorageDAOHandler();
 
     public void initialiseHashMap()throws SQLException {
         //initially store customer table and account table in hashmap

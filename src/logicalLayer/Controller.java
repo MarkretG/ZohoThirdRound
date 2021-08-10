@@ -8,6 +8,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 public class Controller {
+    private static CustomerDAO customerDAO=null;
+    private static AccountDAO accountDAO=null;
+    private static InMemoryStorageDAO inMemoryStorageDAO=null;
     static Properties properties = new Properties();
     static {
         try {
@@ -24,11 +27,6 @@ public class Controller {
         }
     }
 
-
-
-    private static CustomerDAO customerDAO=null;
-    private static AccountDAO accountDAO=null;
-    private static InMemoryStorageDAO inMemoryStorageDAO=null;
     public static synchronized CustomerDAO getCustomerPersistenceDAOHandler()  {
         if (customerDAO==null) {
             String className=(String)properties.get("customerDAO");
