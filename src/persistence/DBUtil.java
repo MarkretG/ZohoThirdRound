@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 public class DBUtil {
     private static Connection connection=null;
-    public static Connection getConnection()throws  ClassNotFoundException {
+    public static Connection getConnection(){
         if (connection != null)
         {
             return connection;

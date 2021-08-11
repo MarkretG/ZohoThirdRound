@@ -15,7 +15,6 @@ public class AccountDAOImpl implements AccountDAO {
             preparedStatement.setLong(1,customer_id);
             preparedStatement.setDouble(2,balance);
             preparedStatement.executeUpdate();
-            throw new ClassNotFoundException("connection never established");
         }
 
     }
