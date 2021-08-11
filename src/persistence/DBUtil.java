@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 public class DBUtil {
     private static Connection connection=null;
-    public static Connection getConnection(){
+    public static Connection getConnection() throws SQLException{
         if (connection != null)
         {
             return connection;
@@ -18,16 +18,14 @@ public class DBUtil {
 
             // create the connection now
             connection = DriverManager.getConnection(url, userName,password);
-            throw new ClassNotFoundException("Driver class not found");
-        }
-        catch (ClassNotFoundException e) {
-            System.out.println("driver class mot found in the method");
-        }
-        catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new ClassNotFoundException();
+          }
+        catch (ClassNotFoundException e)
+        {
+            System.out.println("Connection fail please check driver class");
         }
 
-        return connection;
+         return connection;
     }
     public static void closeConnection(){
         if (connection!=null)

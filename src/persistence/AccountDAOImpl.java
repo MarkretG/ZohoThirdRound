@@ -7,16 +7,19 @@ import java.util.Map;
 
 public class AccountDAOImpl implements AccountDAO {
     @Override
-    public void addAccount(long customer_id, double balance) throws SQLException,ClassNotFoundException {
-        Connection connection=DBUtil.getConnection();
-        String query="insert into account_info(customer_id,balance) values(?,?)";
-        try(PreparedStatement preparedStatement=connection.prepareStatement(query))
-        {
-            preparedStatement.setLong(1,customer_id);
-            preparedStatement.setDouble(2,balance);
-            preparedStatement.executeUpdate();
-        }
-    }
+    public void addAccount(long customer_id, double balance) throws SQLException{
+                Connection connection = DBUtil.getConnection();
+                String query = "insert into account_info(customer_id,balance) values(?,?)";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    preparedStatement.setLong(1, customer_id);
+                    preparedStatement.setDouble(2, balance);
+                    preparedStatement.executeUpdate();
+                }
+              catch (SQLException e)
+              {
+                 System.out.println("SQLException occur");
+              }
+     }
 
     @Override
     public ArrayList<Long> addAccounts(HashMap<Long,Account> account)throws SQLException{
@@ -37,13 +40,20 @@ public class AccountDAOImpl implements AccountDAO {
             if (resultSet.next()) {
                 customer_ids.add(resultSet.getLong(1));
             }
+            resultSet.close();
         }
+        catch (SQLException e)
+        {
+            System.out.println("SQLException occur");
+        }
+
+
         return customer_ids;
 
     }
 
     @Override
-    public ArrayList<Account> selectAccounts(ArrayList<Long> customer_ids) throws SQLException,ClassNotFoundException{
+    public ArrayList<Account> selectAccounts(ArrayList<Long> customer_ids) throws SQLException{
         ArrayList<Account> accounts=new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query="select * from  account_info where customer_id in (?)";
@@ -60,11 +70,15 @@ public class AccountDAOImpl implements AccountDAO {
             }
 
         }
+        catch (SQLException e)
+        {
+            System.out.println("SQLException occur");
+        }
         return accounts;
     }
 
     @Override
-    public Account selectAccount(long customer_id) throws SQLException,ClassNotFoundException{
+    public Account selectAccount(long customer_id) throws SQLException{
         Account account=new Account();
         Connection connection = DBUtil.getConnection();
         try (Statement statement = connection.createStatement();
@@ -75,12 +89,16 @@ public class AccountDAOImpl implements AccountDAO {
                 account.setBalance(resultSet.getDouble(3));
             }
         }
+        catch (SQLException e)
+        {
+            System.out.println("SQLException occur");
+        }
         return account;
     }
 
 
     @Override
-    public ArrayList<Account> selectAllAccounts()throws SQLException,ClassNotFoundException{
+    public ArrayList<Account> selectAllAccounts()throws SQLException{
         ArrayList<Account> accounts=new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         try (Statement statement = connection.createStatement();
@@ -92,6 +110,10 @@ public class AccountDAOImpl implements AccountDAO {
                 account.setBalance(resultSet.getDouble(3));
                 accounts.add(account);
             }
+        }
+        catch (SQLException e)
+        {
+            System.out.println("SQLException occur");
         }
         return  accounts;
     }

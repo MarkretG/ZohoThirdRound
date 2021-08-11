@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 public class CustomerDAOImpl implements CustomerDAO {
     @Override
-    public ArrayList<Long> addCustomer(ArrayList<Customer> customers) throws SQLException,ClassNotFoundException{
+    public ArrayList<Long> addCustomer(ArrayList<Customer> customers) throws SQLException{
         ArrayList<Long> customer_ids= new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query="insert into customer_info(name,age,phone) values(?,?,?)";
@@ -24,11 +24,15 @@ public class CustomerDAOImpl implements CustomerDAO {
                 customer_ids.add(resultSet.getLong(1));
             }
         }
+        catch (SQLException e)
+        {
+            System.out.println("SQLException occur");
+        }
         return customer_ids;
     }
 
     @Override
-    public ArrayList<Customer> selectCustomers(ArrayList<Long> customer_ids) throws SQLException,ClassNotFoundException{
+    public ArrayList<Customer> selectCustomers(ArrayList<Long> customer_ids) throws SQLException{
         ArrayList<Customer> customers=new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query="select customer_id,name from customer_info where customer_id in (?)";
@@ -43,13 +47,17 @@ public class CustomerDAOImpl implements CustomerDAO {
                 customers.add(customerList);
             }
         }
+        catch (SQLException e)
+        {
+            System.out.println("SQLException occur");
+        }
         return customers;
 
     }
 
 
     @Override
-    public ArrayList<Customer> selectAllCustomers() throws SQLException,ClassNotFoundException{
+    public ArrayList<Customer> selectAllCustomers() throws SQLException{
         ArrayList<Customer> customers=new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query="select customer_id,name from customer_info";
@@ -61,6 +69,10 @@ public class CustomerDAOImpl implements CustomerDAO {
                 customerList.setName(resultSet.getString(2));
                 customers.add(customerList);
             }
+        }
+        catch (SQLException e)
+        {
+            System.out.println("SQLException occur");
         }
         return customers;
 

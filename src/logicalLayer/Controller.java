@@ -19,11 +19,11 @@ public class Controller {
         }
         catch (FileNotFoundException e)
         {
-            System.out.println(e.getMessage());
+            System.out.println("file not found please check your file path");
         }
         catch (IOException i)
         {
-            System.out.println(i.getMessage());
+            System.out.println("IOException");
         }
     }
 
@@ -37,6 +37,10 @@ public class Controller {
         } catch (InstantiationException | IllegalAccessException |ClassNotFoundException  e) {
             System.out.println(e.getMessage());
         }
+        catch (NullPointerException e)
+        {
+            System.out.println("class name pointing to null please check your class name");
+        }
 
         return customerDAO;
     }
@@ -49,7 +53,10 @@ public class Controller {
             accountDAO = (AccountDAO) Class.forName(className).newInstance();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
-
+        }
+        catch (NullPointerException e)
+        {
+            System.out.println("class name pointing to null please check your class name");
         }
 
         return accountDAO;
@@ -65,6 +72,10 @@ public class Controller {
             inMemoryStorageDAO = (InMemoryStorageDAO) Class.forName(className).newInstance();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
+        }
+        catch (NullPointerException e)
+        {
+            System.out.println("class name pointing to null please check your class name");
         }
         return inMemoryStorageDAO;
     }
