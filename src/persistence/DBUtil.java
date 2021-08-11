@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 public class DBUtil {
     private static Connection connection=null;
-    public static Connection getConnection(){
+    public static Connection getConnection()throws  ClassNotFoundException {
         if (connection != null)
         {
             return connection;
@@ -15,11 +15,15 @@ public class DBUtil {
             String password = "Root@123";
             // load the Driver Class
             Class.forName("com.mysql.cj.jdbc.Driver");
+
             // create the connection now
             connection = DriverManager.getConnection(url, userName,password);
-        } catch (ClassNotFoundException e) {
+            throw new ClassNotFoundException("Driver class not found");
+        }
+        catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
@@ -36,4 +40,5 @@ public class DBUtil {
             }
         }
     }
+
 }

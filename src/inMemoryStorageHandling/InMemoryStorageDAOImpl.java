@@ -24,18 +24,12 @@ public class InMemoryStorageDAOImpl implements InMemoryStorageDAO {
         }
 
     }
-
     @Override
-    public void storeCustomerInCustomerHashMap(Customer customer,long customer_id) {
-        customerHashMap.put(customer_id,customer.getName());
-    }
-
-    @Override
-    public void storeAccountInAccountHashMap(Account account,long customer_id) {
+    public void storeAccountInAccountHashMap(Account account) {
         HashMap<Long,Account> accountHashMap = accountInfoHashMap.getOrDefault(account.getCustomer_id(), new HashMap<>());
         accountHashMap.put(account.getAccount_id(), account);
 
-        accountInfoHashMap.put(customer_id, accountHashMap);
+        accountInfoHashMap.put(account.getCustomer_id(), accountHashMap);
     }
     @Override
     public HashMap<Long, Account> getAccountsInfo(long customer_id) {

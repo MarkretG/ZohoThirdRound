@@ -4,31 +4,38 @@ import java.sql.*;
 import java.util.ArrayList;
 public class CustomerDAOImpl implements CustomerDAO {
     @Override
-    public long addCustomer(Customer customer) throws SQLException{
-        long key=-1L;
+    public ArrayList<Long> addCustomer(ArrayList<Customer> customers) throws SQLException,ClassNotFoundException{
+        ArrayList<Long> customer_ids= new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query="insert into customer_info(name,age,phone) values(?,?,?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query,PreparedStatement.RETURN_GENERATED_KEYS)) {
             //preparedStatement.setLong(1, customer.getCustomer_id());
-            preparedStatement.setString(1, customer.getName());
-            preparedStatement.setInt(2, customer.getAge());
-            preparedStatement.setLong(3, customer.getPhone());
-            preparedStatement.execute();
+            for (Customer customer:customers) {
+                preparedStatement.setString(1, customer.getName());
+                preparedStatement.setInt(2, customer.getAge());
+                preparedStatement.setLong(3, customer.getPhone());
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+
             ResultSet resultSet=preparedStatement.getGeneratedKeys();
+
             if (resultSet.next()) {
-                key = resultSet.getLong(1);
+                customer_ids.add(resultSet.getLong(1));
             }
         }
-        return key;
+        return customer_ids;
     }
 
     @Override
-    public ArrayList<Customer> selectCustomers(long customer_id) throws SQLException{
+    public ArrayList<Customer> selectCustomers(ArrayList<Long> customer_ids) throws SQLException,ClassNotFoundException{
         ArrayList<Customer> customers=new ArrayList<>();
         Connection connection = DBUtil.getConnection();
-        String query="select customer_id,name from customer_info where customer_id=customer_id";
+        String query="select customer_id,name from customer_info where customer_id in (?)";
         try ( PreparedStatement preparedStatement = connection.prepareStatement(query);
               ResultSet resultSet = preparedStatement.executeQuery()) {
+            Array array = connection.createArrayOf("BIGINT", customer_ids.toArray());
+            preparedStatement.setArray(1, array);
             while (resultSet.next()) {
                 Customer customerList=new Customer();
                 customerList.setCustomer_id(resultSet.getLong(1));
@@ -42,7 +49,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 
 
     @Override
-    public ArrayList<Customer> selectAllCustomers() throws SQLException{
+    public ArrayList<Customer> selectAllCustomers() throws SQLException,ClassNotFoundException{
         ArrayList<Customer> customers=new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query="select customer_id,name from customer_info";

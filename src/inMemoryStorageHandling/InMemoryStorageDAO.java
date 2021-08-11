@@ -7,9 +7,8 @@ public interface InMemoryStorageDAO {
     void storeCustomersInCustomerHashMap(ArrayList<Customer> customers);
 
     void storeAccountsInAccountHashMap(ArrayList<Account> accounts);
-    void storeCustomerInCustomerHashMap(Customer customer,long customer_id);
 
-    void storeAccountInAccountHashMap(Account account,long customer_id);
+    void storeAccountInAccountHashMap(Account account);
 
     HashMap<Long,Account> getAccountsInfo(long customer_id);
 

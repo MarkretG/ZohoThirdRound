@@ -13,11 +13,11 @@ public class Controller {
     private static InMemoryStorageDAO inMemoryStorageDAO=null;
     static Properties properties = new Properties();
     static {
-        try {
-            String path=System.getProperty("user.dir");
-            FileReader reader = new FileReader(path+File.separator+"src"+File.separator+"controller.properties");
+        String path = System.getProperty("user.dir") + File.separator + "src" + File.separator;
+        try (FileReader reader = new FileReader(path + "controller.properties")) {
             properties.load(reader);
-        } catch (FileNotFoundException e)
+        }
+        catch (FileNotFoundException e)
         {
             System.out.println(e.getMessage());
         }
@@ -28,44 +28,44 @@ public class Controller {
     }
 
     public static synchronized CustomerDAO getCustomerPersistenceDAOHandler()  {
-        if (customerDAO==null) {
-            String className=(String)properties.get("customerDAO");
-            try {
-                customerDAO=(CustomerDAO)Class.forName(className).newInstance();
-            } catch (InstantiationException | IllegalAccessException |ClassNotFoundException  e) {
-                System.out.println(e.getMessage());
-            }
-
+        if (customerDAO!=null) {
             return customerDAO;
         }
+        String className=(String)properties.get("customerDAO");
+        try {
+            customerDAO=(CustomerDAO)Class.forName(className).newInstance();
+        } catch (InstantiationException | IllegalAccessException |ClassNotFoundException  e) {
+            System.out.println(e.getMessage());
+        }
+
         return customerDAO;
     }
     public static synchronized AccountDAO getAccountPersistenceDAOHandler() {
-        if (accountDAO==null) {
-           String className=(String) properties.get("accountDAO");
-            try {
-                accountDAO=(AccountDAO)Class.forName(className).newInstance();
-            }
-            catch (InstantiationException |IllegalAccessException |ClassNotFoundException  e) {
-                System.out.println(e.getMessage());
-
-            }
-
+        if (accountDAO!=null) {
             return accountDAO;
         }
+           String className = (String) properties.get("accountDAO");
+        try {
+            accountDAO = (AccountDAO) Class.forName(className).newInstance();
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+
+        }
+
         return accountDAO;
     }
     public static synchronized InMemoryStorageDAO getInMemoryStorageDAOHandler()  {
-        if (inMemoryStorageDAO==null) {
-            String className=(String) properties.get("inMemoryStorageDAO");
-            try {
-                inMemoryStorageDAO=(InMemoryStorageDAO) Class.forName(className).newInstance();
-            }
-            catch (InstantiationException |IllegalAccessException |ClassNotFoundException  e) {
-                System.out.println(e.getMessage());
-            }
+        if (inMemoryStorageDAO!=null)
+        {
             return inMemoryStorageDAO;
         }
-            return inMemoryStorageDAO;
+
+        String className = (String) properties.get("inMemoryStorageDAO");
+        try {
+            inMemoryStorageDAO = (InMemoryStorageDAO) Class.forName(className).newInstance();
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        return inMemoryStorageDAO;
     }
 }

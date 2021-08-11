@@ -4,8 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 public interface CustomerDAO {
     //insert  account
-    long addCustomer(Customer customer)throws SQLException;
-    ArrayList<Customer> selectCustomers(long customer_id) throws SQLException;
+    ArrayList<Long> addCustomer(ArrayList<Customer> customers)throws SQLException,ClassNotFoundException;
+    ArrayList<Customer> selectCustomers(ArrayList<Long> customer_ids) throws SQLException,ClassNotFoundException;
     //select Accounts
-    ArrayList<Customer> selectAllCustomers()throws SQLException;
+    ArrayList<Customer> selectAllCustomers()throws SQLException,ClassNotFoundException;
 }

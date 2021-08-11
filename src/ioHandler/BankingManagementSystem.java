@@ -2,15 +2,15 @@ package ioHandler;
 import bankingManagement.Account;
 import bankingManagement.Customer;
 import logicalLayer.Controller;
-import logicalLayer.LogicalHandling;
+import logicalLayer.LogicalHandler;
 import persistence.DBUtil;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 public class  BankingManagementSystem {
-    public static void main(String[] args) throws SQLException{
+    public static void main(String[] args) throws SQLException,ClassNotFoundException{
         InputHandler inputHandler=new InputHandler();
-        LogicalHandling logicalHandling=new LogicalHandling();
-        logicalHandling.initialiseHashMap();
+        LogicalHandler.getInstance().initialiseHashMap();
         System.out.println("welcome to banking management system");
         System.out.println("1.New Customer\n2.Add new account for existing customer\n3.get accounts info for given customer_id\n4.exit");
 
@@ -20,19 +20,19 @@ public class  BankingManagementSystem {
             switch (choice)
             {
                 case 1: {
-                    Customer customer = inputHandler.getCustomerInfo();
-                    Account account = inputHandler.getAccountInfo();
-                    logicalHandling.handleNewCustomer(customer, account);
+                    ArrayList<Customer> customers = inputHandler.getCustomerInfo();
+                    ArrayList<Account> accounts = inputHandler.getAccountInfo(customers.size());
+                    LogicalHandler.getInstance().handleNewCustomer(customers, accounts);
                 }
                 break;
                 case 2: {
-                    long customer_id = inputHandler.getId();
-                    Account account =  inputHandler.getAccountInfo();
-                    logicalHandling.addNewAccountForExistingCustomer(account, customer_id);
+                    long customer_id = inputHandler.getCustomerId();
+                    double balance = inputHandler.getBalance();
+                    LogicalHandler.getInstance().addNewAccountForExistingCustomer(customer_id,balance);
                 }
                 break;
                 case 3: {
-                    long customer_id = inputHandler.getId();
+                    long customer_id = inputHandler.getCustomerId();
                     HashMap<Long, Account> accountInfo = Controller.getInMemoryStorageDAOHandler().getAccountsInfo(customer_id);
                     System.out.println(accountInfo);
                 }
