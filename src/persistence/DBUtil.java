@@ -21,7 +21,7 @@ public class DBUtil {
             throw new ClassNotFoundException("Driver class not found");
         }
         catch (ClassNotFoundException e) {
-            System.out.println(e.getMessage());
+            System.out.println("driver class mot found in the method");
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());

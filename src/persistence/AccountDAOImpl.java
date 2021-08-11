@@ -16,11 +16,10 @@ public class AccountDAOImpl implements AccountDAO {
             preparedStatement.setDouble(2,balance);
             preparedStatement.executeUpdate();
         }
-
     }
 
     @Override
-    public ArrayList<Long> addAccounts(HashMap<Long,Account> account)throws SQLException,ClassNotFoundException{
+    public ArrayList<Long> addAccounts(HashMap<Long,Account> account)throws SQLException{
         ArrayList<Long> customer_ids=new ArrayList<>();
         Connection connection= DBUtil.getConnection();
         String query="insert into account_info(customer_id,balance) values(?,?)";
