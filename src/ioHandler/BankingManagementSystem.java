@@ -1,18 +1,15 @@
 package ioHandler;
 import bankingManagement.Account;
 import bankingManagement.Customer;
+import inMemoryStorageHandling.AccountNotFoundException;
 import logicalLayer.Controller;
 import logicalLayer.LogicalHandler;
-import persistence.AccountNotFoundException;
-import persistence.ConnectionNotFoundException;
 import persistence.DBUtil;
-import persistence.SQLRelatedException;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 public class  BankingManagementSystem {
-    public static void main(String[] args) throws SQLException, ConnectionNotFoundException, SQLRelatedException {
+    public static void main(String[] args) throws SQLException{
         InputHandler inputHandler=new InputHandler();
         LogicalHandler.getInstance().initialiseHashMap();
         System.out.println("welcome to banking management system");
@@ -27,27 +24,30 @@ public class  BankingManagementSystem {
                     ArrayList<Customer> customers = inputHandler.getCustomerInfo();
                     ArrayList<Account> accounts = inputHandler.getAccountInfo(customers.size());
                     LogicalHandler.getInstance().handleNewCustomer(customers, accounts);
-                }
+                    }
                 break;
                 case 2: {
+                    System.out.println("enter customer id");
                     long customer_id = inputHandler.getCustomerId();
+                    System.out.println("enter balance");
                     double balance = inputHandler.getBalance();
                     LogicalHandler.getInstance().addNewAccountForExistingCustomer(customer_id,balance);
-                }
+                   }
                 break;
-                case 3: {
+                case 3:
+                    System.out.println("enter customer id");
                     long customer_id = inputHandler.getCustomerId();
                     try {
                         HashMap<Long, Account> accountInfo = Controller.getInMemoryStorageDAOHandler().getAccountsInfo(customer_id);
                         System.out.println(accountInfo);
-                       }
-                     catch (AccountNotFoundException e)
-                     {
-                        System.out.println(e.getCustomer_id()+"this id not available in account table");
-                     }
+                    }
+                    catch (AccountNotFoundException e)
+                    {
+                        System.out.println(e.getCustomer_id()+"this customer_id not available in account table");
+                    }
 
-                }
-                break;
+
+                    break;
                 case 4:
                     DBUtil.closeConnection();
                     inputHandler.closeScanner();

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class AccountDAOImpl implements AccountDAO {
     @Override
-    public  void addAccount(long customer_id, double balance)throws SQLException,ConnectionNotFoundException,SQLRelatedException{
+    public  void addAccount(long customer_id, double balance)throws SQLException, PersistenceException {
                       Connection connection = DBUtil.getConnection();
                 String query = "insert into account_info(customer_id,balance) values(?,?)";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -17,12 +17,12 @@ public class AccountDAOImpl implements AccountDAO {
                 }
                 catch (SQLException e)
                 {
-                    throw new SQLRelatedException("Exception occur in insert query");
+                    throw new PersistenceException("Exception occur in insert query for add account");
                 }
      }
 
     @Override
-    public ArrayList<Long> addAccounts(HashMap<Long,Account> account)throws SQLException,ConnectionNotFoundException,SQLRelatedException{
+    public ArrayList<Long> addAccounts(HashMap<Long,Account> account)throws SQLException, PersistenceException {
         ArrayList<Long> customer_ids=new ArrayList<>();
         Connection connection= DBUtil.getConnection();
         String query="insert into account_info(customer_id,balance) values(?,?)";
@@ -44,14 +44,14 @@ public class AccountDAOImpl implements AccountDAO {
         }
         catch (SQLException e)
         {
-            throw new SQLRelatedException("Exception occur in insert query in account table");
+            throw new PersistenceException("Exception occur in insert query for add account ");
         }
         return customer_ids;
 
     }
 
     @Override
-    public ArrayList<Account> selectAccounts(ArrayList<Long> customer_ids) throws SQLException,ConnectionNotFoundException,SQLRelatedException{
+    public ArrayList<Account> selectAccounts(ArrayList<Long> customer_ids) throws SQLException, PersistenceException {
         ArrayList<Account> accounts=new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query="select * from  account_info where customer_id in (?)";
@@ -70,13 +70,13 @@ public class AccountDAOImpl implements AccountDAO {
         }
         catch (SQLException e)
         {
-            throw new SQLRelatedException("Exception occur in insert query in account table");
+            throw new PersistenceException("Exception occur in insert query in account table");
         }
         return accounts;
     }
 
     @Override
-    public Account selectAccount(long customer_id) throws SQLException,ConnectionNotFoundException,SQLRelatedException{
+    public Account selectAccount(long customer_id) throws SQLException, PersistenceException {
         Account account=new Account();
         Connection connection = DBUtil.getConnection();
         try (Statement statement = connection.createStatement();
@@ -89,14 +89,14 @@ public class AccountDAOImpl implements AccountDAO {
         }
         catch (SQLException e)
         {
-            throw new SQLRelatedException("Exception occur in select query in account table");
+            throw new PersistenceException("Exception occur in select query in account table");
         }
         return account;
     }
 
 
     @Override
-    public ArrayList<Account> selectAllAccounts()throws SQLException,ConnectionNotFoundException,SQLRelatedException{
+    public ArrayList<Account> selectAllAccounts()throws SQLException, PersistenceException {
         ArrayList<Account> accounts = new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         try (Statement statement = connection.createStatement();
@@ -111,7 +111,7 @@ public class AccountDAOImpl implements AccountDAO {
         }
         catch (SQLException e)
         {
-            throw new SQLRelatedException("Exception occur in select query in account table");
+            throw new PersistenceException("Exception occur in select query in account table");
         }
 
         return accounts;

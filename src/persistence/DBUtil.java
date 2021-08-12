@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 public class DBUtil {
     private static Connection connection=null;
-    public static Connection getConnection() throws ConnectionNotFoundException,SQLException{
+    public static Connection getConnection() throws SQLException, PersistenceException {
         if (connection != null)
         {
             return connection;
@@ -24,7 +24,7 @@ public class DBUtil {
            }
            catch (ClassNotFoundException e)
            {
-               throw new ConnectionNotFoundException("Exception in get connection");
+               throw new PersistenceException("Exception in get connection");
            }
 
       return connection;

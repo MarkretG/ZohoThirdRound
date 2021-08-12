@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 public class CustomerDAOImpl implements CustomerDAO {
     @Override
-    public ArrayList<Long> addCustomer(ArrayList<Customer> customers)throws SQLException,ConnectionNotFoundException,SQLRelatedException{
+    public ArrayList<Long> addCustomer(ArrayList<Customer> customers)throws SQLException, PersistenceException {
         ArrayList<Long> customer_ids= new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query="insert into customer_info(name,age,phone) values(?,?,?)";
@@ -26,13 +26,13 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
         catch (SQLException e)
         {
-            throw new SQLRelatedException("Exception occur in insert query in customer table");
+            throw new PersistenceException("Exception occur in insert query in customer table");
         }
         return customer_ids;
     }
 
     @Override
-    public ArrayList<Customer> selectCustomers(ArrayList<Long> customer_ids) throws SQLException,ConnectionNotFoundException,SQLRelatedException{
+    public ArrayList<Customer> selectCustomers(ArrayList<Long> customer_ids) throws SQLException, PersistenceException {
         ArrayList<Customer> customers=new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query="select customer_id,name from customer_info where customer_id in (?)";
@@ -49,7 +49,7 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
         catch (SQLException e)
         {
-            throw new SQLRelatedException("Exception occur in select query for customer table");
+            throw new PersistenceException("Exception occur in select query for customer table");
         }
         return customers;
 
@@ -57,7 +57,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 
 
     @Override
-    public ArrayList<Customer> selectAllCustomers() throws SQLException,ConnectionNotFoundException,SQLRelatedException{
+    public ArrayList<Customer> selectAllCustomers() throws SQLException, PersistenceException {
         ArrayList<Customer> customers=new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query="select customer_id,name from customer_info";
@@ -72,7 +72,7 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
         catch (SQLException e)
         {
-            throw new SQLRelatedException("Exception occur in select query for customer table");
+            throw new PersistenceException("Exception occur in select query for customer table");
         }
         return customers;
 

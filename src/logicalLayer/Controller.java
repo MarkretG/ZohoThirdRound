@@ -11,23 +11,26 @@ public class Controller {
     private static CustomerDAO customerDAO=null;
     private static AccountDAO accountDAO=null;
     private static InMemoryStorageDAO inMemoryStorageDAO=null;
-    static Properties properties = new Properties();
-    static {
+     static Properties properties = new Properties();
+
+    public static void getPropertiesFile() throws LogicalException
+    {
+
         String path = System.getProperty("user.dir") + File.separator + "src" + File.separator;
         try (FileReader reader = new FileReader(path + "controller.properties")) {
             properties.load(reader);
         }
         catch (FileNotFoundException e)
         {
-            System.out.println("file not found please check your file path");
+            throw new LogicalException("file not found please check your file path");
         }
         catch (IOException i)
         {
-            System.out.println("IOException");
+            throw new LogicalException("you are try to read file that does not exit");
         }
     }
 
-    public static synchronized CustomerDAO getCustomerPersistenceDAOHandler()  {
+    public static synchronized CustomerDAO getCustomerPersistenceDAOHandler(){
         if (customerDAO!=null) {
             return customerDAO;
         }
@@ -54,10 +57,6 @@ public class Controller {
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        catch (NullPointerException e)
-        {
-            System.out.println("class name pointing to null please check your class name");
-        }
 
         return accountDAO;
     }
@@ -72,10 +71,6 @@ public class Controller {
             inMemoryStorageDAO = (InMemoryStorageDAO) Class.forName(className).newInstance();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
-        }
-        catch (NullPointerException e)
-        {
-            System.out.println("class name pointing to null please check your class name");
         }
         return inMemoryStorageDAO;
     }

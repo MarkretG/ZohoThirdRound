@@ -1,8 +1,6 @@
 package inMemoryStorageHandling;
 import bankingManagement.Account;
 import bankingManagement.Customer;
-import persistence.AccountNotFoundException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 public class InMemoryStorageDAOImpl implements InMemoryStorageDAO {
@@ -34,8 +32,7 @@ public class InMemoryStorageDAOImpl implements InMemoryStorageDAO {
         accountInfoHashMap.put(account.getCustomer_id(), accountHashMap);
     }
     @Override
-    public HashMap<Long, Account> getAccountsInfo(long customer_id)throws AccountNotFoundException {
-
+    public HashMap<Long, Account> getAccountsInfo(long customer_id)throws AccountNotFoundException{
         HashMap<Long,Account> account=accountInfoHashMap.get(customer_id);
         if (account==null)
         {
