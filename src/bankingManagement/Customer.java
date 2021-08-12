@@ -1,4 +1,5 @@
 package bankingManagement;
+
 public class Customer {
     private long customer_id;
     private  String name;
