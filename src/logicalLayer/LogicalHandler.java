@@ -28,7 +28,7 @@ public class LogicalHandler {
             ArrayList<Account> accounts = Controller.getAccountDAOHandler().selectAllAccounts();
             Controller.getInMemoryStorageDAOHandler().storeAccountsInAccountHashMap(accounts);
         } catch (PersistenceException e) {
-            System.out.println(e.getErrorCode() + ":" + e.getMessage());
+            System.out.println("ERROR CODE:"+e.getErrorCode() + " " + e.getMessage());
         }
 
     }
@@ -69,7 +69,7 @@ public class LogicalHandler {
             //store in account hashMap
             Controller.getInMemoryStorageDAOHandler().storeAccountInAccountHashMap(account);
         } catch (PersistenceException e) {
-            System.out.println(e.getErrorCode() + ":" + e.getMessage());
+            System.out.println("ERROR CODE:"+e.getErrorCode() + " " + e.getMessage());
         }
 
     }

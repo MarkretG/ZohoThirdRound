@@ -44,7 +44,7 @@ public class  BankingManagementSystem {
                     }
                     catch (AccountNotFoundException e)
                     {
-                        System.out.println(e.getCustomer_id()+"this customer_id not available in account table");
+                        System.out.println("Customer_id:"+e.getCustomer_id()+"this customer_id not available in account table");
                     }
 
 

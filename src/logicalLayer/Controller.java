@@ -46,7 +46,7 @@ public class Controller {
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             throw new LogicalException("class not found in properties file", errorCodeForClass);
         } catch (LogicalException e) {
-            System.out.println(e.getMessage());
+            System.out.println("ERROR CODE:"+e.getErrorCode()+" "+e.getMessage());
         }
         return customerDAO;
     }
@@ -60,7 +60,7 @@ public class Controller {
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             throw new LogicalException("class not found in properties file", errorCodeForClass);
         } catch (LogicalException e) {
-            System.out.println(e.getMessage());
+            System.out.println("ERROR CODE:"+e.getErrorCode()+" "+e.getMessage());
         }
         return accountDAO;
     }
@@ -75,7 +75,7 @@ public class Controller {
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             throw new LogicalException("class not found in properties file", errorCodeForClass);
         } catch (LogicalException e) {
-            System.out.println(e.getMessage());
+            System.out.println("ERROR CODE:"+e.getErrorCode()+" "+e.getMessage());
         }
         return inMemoryStorageDAO;
     }

@@ -7,4 +7,8 @@ public class LogicalException extends Exception{
         this.message=message;
         this.errorCode=errorCode;
     }
+
+    public int getErrorCode() {
+        return errorCode;
+    }
 }

@@ -24,7 +24,7 @@ public class InputHandler {
             int age = scanner.nextInt();
             System.out.println("enter phone Number");
             long phone = scanner.nextLong();
-            Customer customer= LogicalHandler.getInstance().getCustomerObject(name, age, phone);
+            Customer customer=LogicalHandler.getInstance().getCustomerObject(name,age,phone);
             customers.add(customer);
         }
         return customers;
