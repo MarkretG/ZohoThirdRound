@@ -1,6 +1,8 @@
 package inMemoryStorageHandling;
 import bankingManagement.Customer;
 import bankingManagement.Account;
+import persistence.AccountNotFoundException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 public interface InMemoryStorageDAO {
@@ -10,6 +12,6 @@ public interface InMemoryStorageDAO {
 
     void storeAccountInAccountHashMap(Account account);
 
-    HashMap<Long,Account> getAccountsInfo(long customer_id);
+    HashMap<Long,Account> getAccountsInfo(long customer_id) throws AccountNotFoundException;
 
 }

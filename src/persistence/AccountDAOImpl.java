@@ -7,22 +7,22 @@ import java.util.Map;
 
 public class AccountDAOImpl implements AccountDAO {
     @Override
-    public void addAccount(long customer_id, double balance) throws SQLException{
-                Connection connection = DBUtil.getConnection();
+    public  void addAccount(long customer_id, double balance)throws SQLException,ConnectionNotFoundException,SQLRelatedException{
+                      Connection connection = DBUtil.getConnection();
                 String query = "insert into account_info(customer_id,balance) values(?,?)";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                     preparedStatement.setLong(1, customer_id);
                     preparedStatement.setDouble(2, balance);
                     preparedStatement.executeUpdate();
                 }
-              catch (SQLException e)
-              {
-                 System.out.println("SQLException occur");
-              }
+                catch (SQLException e)
+                {
+                    throw new SQLRelatedException("Exception occur in insert query");
+                }
      }
 
     @Override
-    public ArrayList<Long> addAccounts(HashMap<Long,Account> account)throws SQLException{
+    public ArrayList<Long> addAccounts(HashMap<Long,Account> account)throws SQLException,ConnectionNotFoundException,SQLRelatedException{
         ArrayList<Long> customer_ids=new ArrayList<>();
         Connection connection= DBUtil.getConnection();
         String query="insert into account_info(customer_id,balance) values(?,?)";
@@ -31,7 +31,7 @@ public class AccountDAOImpl implements AccountDAO {
             {
                 preparedStatement.setLong(1,entry.getKey());
                // preparedStatement.setLong(2, account.getAccount_id());
-                preparedStatement.setDouble(3,entry.getValue().getBalance());
+                preparedStatement.setDouble(2,entry.getValue().getBalance());
                 preparedStatement.addBatch();
             }
             preparedStatement.executeBatch();
@@ -44,16 +44,14 @@ public class AccountDAOImpl implements AccountDAO {
         }
         catch (SQLException e)
         {
-            System.out.println("SQLException occur");
+            throw new SQLRelatedException("Exception occur in insert query in account table");
         }
-
-
         return customer_ids;
 
     }
 
     @Override
-    public ArrayList<Account> selectAccounts(ArrayList<Long> customer_ids) throws SQLException{
+    public ArrayList<Account> selectAccounts(ArrayList<Long> customer_ids) throws SQLException,ConnectionNotFoundException,SQLRelatedException{
         ArrayList<Account> accounts=new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query="select * from  account_info where customer_id in (?)";
@@ -72,13 +70,13 @@ public class AccountDAOImpl implements AccountDAO {
         }
         catch (SQLException e)
         {
-            System.out.println("SQLException occur");
+            throw new SQLRelatedException("Exception occur in insert query in account table");
         }
         return accounts;
     }
 
     @Override
-    public Account selectAccount(long customer_id) throws SQLException{
+    public Account selectAccount(long customer_id) throws SQLException,ConnectionNotFoundException,SQLRelatedException{
         Account account=new Account();
         Connection connection = DBUtil.getConnection();
         try (Statement statement = connection.createStatement();
@@ -91,20 +89,20 @@ public class AccountDAOImpl implements AccountDAO {
         }
         catch (SQLException e)
         {
-            System.out.println("SQLException occur");
+            throw new SQLRelatedException("Exception occur in select query in account table");
         }
         return account;
     }
 
 
     @Override
-    public ArrayList<Account> selectAllAccounts()throws SQLException{
-        ArrayList<Account> accounts=new ArrayList<>();
+    public ArrayList<Account> selectAllAccounts()throws SQLException,ConnectionNotFoundException,SQLRelatedException{
+        ArrayList<Account> accounts = new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("select * from  account_info")) {
             while (resultSet.next()) {
-                Account account=new Account();
+                Account account = new Account();
                 account.setCustomer_id(resultSet.getLong(1));
                 account.setAccount_id(resultSet.getLong(2));
                 account.setBalance(resultSet.getDouble(3));
@@ -113,8 +111,9 @@ public class AccountDAOImpl implements AccountDAO {
         }
         catch (SQLException e)
         {
-            System.out.println("SQLException occur");
+            throw new SQLRelatedException("Exception occur in select query in account table");
         }
-        return  accounts;
+
+        return accounts;
     }
 }
