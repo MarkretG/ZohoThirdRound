@@ -13,7 +13,7 @@ public class Controller {
     private static InMemoryStorageDAO inMemoryStorageDAO=null;
      static Properties properties = new Properties();
 
-    public static void getPropertiesFile() throws LogicalException
+    public static void getProperties() throws LogicalException
     {
 
         String path = System.getProperty("user.dir") + File.separator + "src" + File.separator;
