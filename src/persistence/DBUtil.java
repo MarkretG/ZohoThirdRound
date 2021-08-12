@@ -10,22 +10,18 @@ public class DBUtil {
             return connection;
         }
 
-           try
-           {
-               String url = "jdbc:mysql://localhost:3306/info";
+        try {
+            String url = "jdbc:mysql://localhost:3306/info";
+            String userName = "root";
+            String password = "Root@123";
 
-               String userName = "root";
-               String password = "Root@123";
-               // load the Driver Class
-               Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver"); // load the Driver Class
 
-               // create the connection now
-               connection = DriverManager.getConnection(url, userName, password);
-           }
-           catch (ClassNotFoundException e)
-           {
-               throw new PersistenceException("Exception in get connection");
-           }
+            connection = DriverManager.getConnection(url, userName, password);// create the connection now
+        } catch (ClassNotFoundException e) {
+            int errorCode = 202;
+            throw new PersistenceException("Exception in get connection", errorCode);
+        }
 
       return connection;
     }

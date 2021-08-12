@@ -8,68 +8,73 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 public class Controller {
+
+    private static final int errorCodeForFile=502;
+    private static final int errorCodeForClass=503;
+
     private static CustomerDAO customerDAO=null;
     private static AccountDAO accountDAO=null;
     private static InMemoryStorageDAO inMemoryStorageDAO=null;
-     static Properties properties = new Properties();
 
-    public static void getProperties() throws LogicalException
+    static Properties properties = new Properties();
+
+    public static Properties getProperties() throws LogicalException
     {
+        if (!properties.isEmpty()) {
+            return properties;
+        }
 
         String path = System.getProperty("user.dir") + File.separator + "src" + File.separator;
         try (FileReader reader = new FileReader(path + "controller.properties")) {
             properties.load(reader);
+        } catch (FileNotFoundException e) {
+            throw new LogicalException("file not found please check your file path", errorCodeForFile);
+        } catch (IOException i) {
+            throw new LogicalException("you are try to read file that does not exist", errorCodeForFile);
         }
-        catch (FileNotFoundException e)
-        {
-            throw new LogicalException("file not found please check your file path");
-        }
-        catch (IOException i)
-        {
-            throw new LogicalException("you are try to read file that does not exit");
-        }
+        return properties;
     }
 
-    public static synchronized CustomerDAO getCustomerPersistenceDAOHandler(){
-        if (customerDAO!=null) {
+    public static synchronized CustomerDAO getCustomerDAOHandler()throws LogicalException{
+
+        if (customerDAO != null) {
             return customerDAO;
         }
-        String className=(String)properties.get("customerDAO");
         try {
-            customerDAO=(CustomerDAO)Class.forName(className).newInstance();
-        } catch (InstantiationException | IllegalAccessException |ClassNotFoundException  e) {
+            String className = (String) getProperties().get("customerDAO");
+            customerDAO = (CustomerDAO) Class.forName(className).newInstance();
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            throw new LogicalException("class not found in properties file", errorCodeForClass);
+        } catch (LogicalException e) {
             System.out.println(e.getMessage());
         }
-        catch (NullPointerException e)
-        {
-            System.out.println("class name pointing to null please check your class name");
-        }
-
         return customerDAO;
     }
-    public static synchronized AccountDAO getAccountPersistenceDAOHandler() {
-        if (accountDAO!=null) {
+    public static synchronized AccountDAO getAccountDAOHandler() throws LogicalException {
+        if (accountDAO != null) {
             return accountDAO;
         }
-           String className = (String) properties.get("accountDAO");
         try {
+            String className = (String) getProperties().get("accountDAO");
             accountDAO = (AccountDAO) Class.forName(className).newInstance();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            throw new LogicalException("class not found in properties file", errorCodeForClass);
+        } catch (LogicalException e) {
             System.out.println(e.getMessage());
         }
-
         return accountDAO;
     }
-    public static synchronized InMemoryStorageDAO getInMemoryStorageDAOHandler()  {
-        if (inMemoryStorageDAO!=null)
-        {
+
+    public static synchronized InMemoryStorageDAO getInMemoryStorageDAOHandler()throws LogicalException{
+        if (inMemoryStorageDAO != null) {
             return inMemoryStorageDAO;
         }
-
-        String className = (String) properties.get("inMemoryStorageDAO");
         try {
+            String className = (String) getProperties().get("inMemoryStorageDAO");
             inMemoryStorageDAO = (InMemoryStorageDAO) Class.forName(className).newInstance();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            throw new LogicalException("class not found in properties file", errorCodeForClass);
+        } catch (LogicalException e) {
             System.out.println(e.getMessage());
         }
         return inMemoryStorageDAO;

@@ -3,13 +3,14 @@ import bankingManagement.Account;
 import bankingManagement.Customer;
 import inMemoryStorageHandling.AccountNotFoundException;
 import logicalLayer.Controller;
+import logicalLayer.LogicalException;
 import logicalLayer.LogicalHandler;
 import persistence.DBUtil;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 public class  BankingManagementSystem {
-    public static void main(String[] args) throws SQLException{
+    public static void main(String[] args) throws SQLException, LogicalException {
         InputHandler inputHandler=new InputHandler();
         LogicalHandler.getInstance().initialiseHashMap();
         System.out.println("welcome to banking management system");

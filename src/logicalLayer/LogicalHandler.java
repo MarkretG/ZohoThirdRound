@@ -1,16 +1,12 @@
 package logicalLayer;
 import bankingManagement.Account;
 import bankingManagement.Customer;
-import inMemoryStorageHandling.InMemoryStorageDAO;
 import persistence.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class LogicalHandler{
-    private CustomerDAO customerDAO=Controller.getCustomerPersistenceDAOHandler();
-      private AccountDAO accountDAO=Controller.getAccountPersistenceDAOHandler();
-      private InMemoryStorageDAO inMemoryStorageDAO=Controller.getInMemoryStorageDAOHandler();
+public class LogicalHandler {
 
       private static LogicalHandler logicalHandler=null;
       public  static LogicalHandler getInstance()
@@ -22,40 +18,45 @@ public class LogicalHandler{
           return logicalHandler;
       }
 
-    public void initialiseHashMap() throws SQLException{
+    public void initialiseHashMap() throws SQLException,LogicalException{
         //initially store customer table and account table in hashmap
             try {
-                inMemoryStorageDAO.storeCustomersInCustomerHashMap(customerDAO.selectAllCustomers());
-                inMemoryStorageDAO.storeAccountsInAccountHashMap(accountDAO.selectAllAccounts());
+                //get all customers and store in customer HashMap
+                ArrayList<Customer> customers=Controller.getCustomerDAOHandler().selectAllCustomers();
+                Controller.getInMemoryStorageDAOHandler().storeCustomersInCustomerHashMap(customers);
+
+                //get all Accounts and store Hashmap account HashMap
+                ArrayList<Account> accounts=Controller.getAccountDAOHandler().selectAllAccounts();
+                Controller.getInMemoryStorageDAOHandler().storeAccountsInAccountHashMap(accounts);
             }
             catch (PersistenceException e)
             {
-                System.out.println(e.getMessage());
+                System.out.println(e.getErrorCode()+":"+e.getMessage());
             }
 
     }
-    public void handleNewCustomer(ArrayList<Customer> customers, ArrayList<Account> accounts) throws SQLException{
+    public void handleNewCustomer(ArrayList<Customer> customers, ArrayList<Account> accounts) throws SQLException,LogicalException{
             try {
-                ArrayList<Long> customer_ids = customerDAO.addCustomer(customers);
+                ArrayList<Long> customer_ids = Controller.getCustomerDAOHandler().addCustomer(customers);
                 HashMap<Long, Account> account = getAccounts(customer_ids, accounts);
 
-                ArrayList<Long> customer_id = accountDAO.addAccounts(account);
-                inMemoryStorageDAO.storeCustomersInCustomerHashMap(customerDAO.selectCustomers(customer_ids));
-                inMemoryStorageDAO.storeAccountsInAccountHashMap(accountDAO.selectAccounts(customer_id));
+                ArrayList<Long> customer_id = Controller.getAccountDAOHandler().addAccounts(account);
+                Controller.getInMemoryStorageDAOHandler().storeCustomersInCustomerHashMap(Controller.getCustomerDAOHandler().selectCustomers(customer_ids));
+                Controller.getInMemoryStorageDAOHandler().storeAccountsInAccountHashMap(Controller.getAccountDAOHandler().selectAccounts(customer_id));
             }
             catch (PersistenceException e)
             {
-                System.out.println(e.getMessage());
+                System.out.println(e.getErrorCode()+":"+e.getMessage());
             }
       }
-    public void addNewAccountForExistingCustomer(long customer_id,double balance) throws SQLException {
+    public void addNewAccountForExistingCustomer(long customer_id,double balance) throws SQLException,LogicalException {
              try {
-                 accountDAO.addAccount(customer_id,balance);
-                 inMemoryStorageDAO.storeAccountInAccountHashMap(accountDAO.selectAccount(customer_id));
+                 Controller.getAccountDAOHandler().addAccount(customer_id,balance);
+                 Controller.getInMemoryStorageDAOHandler().storeAccountInAccountHashMap(Controller.getAccountDAOHandler().selectAccount(customer_id));
              }
              catch (PersistenceException e)
              {
-                 System.out.println(e.getMessage());
+                 System.out.println(e.getErrorCode()+":"+e.getMessage());
              }
 
     }
