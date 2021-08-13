@@ -23,4 +23,6 @@ public interface PersistenceDAO{
 
     //select All Accounts
     ArrayList<Account> selectAllAccounts()throws  PersistenceException;
+
+
 }

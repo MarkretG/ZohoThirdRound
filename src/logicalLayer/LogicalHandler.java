@@ -15,7 +15,6 @@ public class LogicalHandler {
         }
         return logicalHandler;
     }
-
     public void initialiseHashMap() throws LogicalException{
         //initially store customer table and account table in hashmap
         try {

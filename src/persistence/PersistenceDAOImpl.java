@@ -39,10 +39,21 @@ public class PersistenceDAOImpl implements PersistenceDAO{
         ArrayList<Customer> customers=new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query="select customer_id,name from customer_info where customer_id in (?)";
-        try ( PreparedStatement preparedStatement = connection.prepareStatement(query);
-              ResultSet resultSet = preparedStatement.executeQuery()) {
-            Array array = connection.createArrayOf("BIGINT", customer_ids.toArray());
-            preparedStatement.setArray(1, array);
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            Object[] ids = new Object[customer_ids.size()];
+            for (int i = 0; i <customer_ids.size(); i++) {
+                ids[i] = Long.parseLong(String.valueOf(customer_ids.get(i)));
+            }
+            try {
+                //Array array = connection.createArrayOf("bigint",ids);
+                preparedStatement.setArray(1, connection.createArrayOf("bigint", ids));
+            }
+            catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Customer customerList=new Customer();
                 customerList.setCustomer_id(resultSet.getLong(1));
@@ -123,11 +134,11 @@ public class PersistenceDAOImpl implements PersistenceDAO{
         ArrayList<Account> accounts = new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query = "select * from  account_info where customer_id in (?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery())
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query))
         {
             Array array = connection.createArrayOf("BIGINT", customer_ids.toArray());
             preparedStatement.setArray(1, array);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Account account1 = new Account();
                 account1.setCustomer_id(resultSet.getLong(1));
