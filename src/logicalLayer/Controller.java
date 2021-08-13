@@ -1,7 +1,6 @@
 package logicalLayer;
-import persistence.CustomerDAO;
-import persistence.AccountDAO;
 import inMemoryStorageHandling.InMemoryStorageDAO;
+import persistence.PersistenceDAO;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -12,8 +11,7 @@ public class Controller {
     private static final int errorCodeForFile=502;
     private static final int errorCodeForClass=503;
 
-    private static CustomerDAO customerDAO=null;
-    private static AccountDAO accountDAO=null;
+    private static PersistenceDAO persistenceDAO=null;
     private static InMemoryStorageDAO inMemoryStorageDAO=null;
 
     static Properties properties = new Properties();
@@ -35,37 +33,23 @@ public class Controller {
         return properties;
     }
 
-    public static synchronized CustomerDAO getCustomerDAOHandler()throws LogicalException{
+    public static synchronized PersistenceDAO getPersistenceDAOHandler()throws LogicalException{
 
-        if (customerDAO != null) {
-            return customerDAO;
+        if (persistenceDAO!= null) {
+            return persistenceDAO;
         }
         try {
             String className = (String) getProperties().get("customerDAO");
-            customerDAO = (CustomerDAO) Class.forName(className).newInstance();
+            persistenceDAO = (PersistenceDAO) Class.forName(className).newInstance();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             throw new LogicalException("class not found in properties file", errorCodeForClass);
         } catch (LogicalException e) {
             System.out.println("ERROR CODE:"+e.getErrorCode()+" "+e.getMessage());
         }
-        return customerDAO;
-    }
-    public static synchronized AccountDAO getAccountDAOHandler() throws LogicalException {
-        if (accountDAO != null) {
-            return accountDAO;
-        }
-        try {
-            String className = (String) getProperties().get("accountDAO");
-            accountDAO = (AccountDAO) Class.forName(className).newInstance();
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-            throw new LogicalException("class not found in properties file", errorCodeForClass);
-        } catch (LogicalException e) {
-            System.out.println("ERROR CODE:"+e.getErrorCode()+" "+e.getMessage());
-        }
-        return accountDAO;
+        return persistenceDAO;
     }
 
-    public static synchronized InMemoryStorageDAO getInMemoryStorageDAOHandler()throws LogicalException{
+        public static synchronized InMemoryStorageDAO getInMemoryStorageDAOHandler()throws LogicalException{
         if (inMemoryStorageDAO != null) {
             return inMemoryStorageDAO;
         }

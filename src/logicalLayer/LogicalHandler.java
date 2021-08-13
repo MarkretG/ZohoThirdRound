@@ -21,11 +21,11 @@ public class LogicalHandler {
         //initially store customer table and account table in hashmap
         try {
             //get all customers and store in customer HashMap
-            ArrayList<Customer> customers = Controller.getCustomerDAOHandler().selectAllCustomers();
+            ArrayList<Customer> customers = Controller.getPersistenceDAOHandler().selectAllCustomers();
             Controller.getInMemoryStorageDAOHandler().storeCustomersInCustomerHashMap(customers);
 
             //get all Accounts and store in Hashmap account HashMap
-            ArrayList<Account> accounts = Controller.getAccountDAOHandler().selectAllAccounts();
+            ArrayList<Account> accounts = Controller.getPersistenceDAOHandler().selectAllAccounts();
             Controller.getInMemoryStorageDAOHandler().storeAccountsInAccountHashMap(accounts);
         } catch (PersistenceException e) {
             System.out.println("ERROR CODE:"+e.getErrorCode() + " " + e.getMessage());
@@ -35,36 +35,36 @@ public class LogicalHandler {
     public void handleNewCustomer(ArrayList<Customer> customers, ArrayList<Account> accounts) throws SQLException,LogicalException{
         try {
             //insert customers in customer table and get generated customer ids
-            ArrayList<Long> customer_ids = Controller.getCustomerDAOHandler().addCustomer(customers);
+            ArrayList<Long> customer_ids = Controller.getPersistenceDAOHandler().addCustomer(customers);
 
             //map the inserted customer id and matching account info
             HashMap<Long, Account> account = getAccounts(customer_ids, accounts);
 
             //insert accounts in account table and get inserted customer ids
-            ArrayList<Long> customer_id = Controller.getAccountDAOHandler().addAccounts(account);
+            ArrayList<Long> customer_id = Controller.getPersistenceDAOHandler().addAccounts(account);
 
             //get all inserted customers
-            ArrayList<Customer> customers1 = Controller.getCustomerDAOHandler().selectCustomers(customer_ids);
+            ArrayList<Customer> customers1 = Controller.getPersistenceDAOHandler().selectCustomers(customer_ids);
 
             //store in customer HashMap
             Controller.getInMemoryStorageDAOHandler().storeCustomersInCustomerHashMap(customers1);
 
             // get all inserted Accounts
-            ArrayList<Account> accounts1 = Controller.getAccountDAOHandler().selectAccounts(customer_id);
+            ArrayList<Account> accounts1 = Controller.getPersistenceDAOHandler().selectAccounts(customer_id);
 
             //store in account HashMap
             Controller.getInMemoryStorageDAOHandler().storeAccountsInAccountHashMap(accounts1);
         } catch (PersistenceException e) {
-            System.out.println(e.getErrorCode() + ":" + e.getMessage());
+            System.out.println("ERROR CODE:"+e.getErrorCode() + ":" + e.getMessage());
         }
       }
     public void addNewAccountForExistingCustomer(long customer_id,double balance) throws SQLException,LogicalException {
         try {
             //add new account for existing customer
-            Controller.getAccountDAOHandler().addAccount(customer_id, balance);
+            Controller.getPersistenceDAOHandler().addAccount(customer_id, balance);
 
             //get inserted account
-            Account account = Controller.getAccountDAOHandler().selectAccount(customer_id);
+            Account account = Controller.getPersistenceDAOHandler().selectAccount(customer_id);
 
             //store in account hashMap
             Controller.getInMemoryStorageDAOHandler().storeAccountInAccountHashMap(account);
