@@ -11,4 +11,9 @@ public class PersistenceException extends Exception{
     public int getErrorCode() {
         return errorCode;
     }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
 }

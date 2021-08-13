@@ -39,10 +39,10 @@ public class Controller {
             return persistenceDAO;
         }
         try {
-            String className = (String) getProperties().get("customerDAO");
-            persistenceDAO = (PersistenceDAO) Class.forName(className).newInstance();
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-            throw new LogicalException("class not found in properties file", errorCodeForClass);
+            String className = (String) getProperties().get("persistenceDAO");
+                persistenceDAO = (PersistenceDAO) Class.forName(className).newInstance();
+        } catch (NullPointerException|InstantiationException | IllegalAccessException | ClassNotFoundException  e) {
+            throw new LogicalException("class name pointing to null or class not found exception occur ", errorCodeForClass);
         } catch (LogicalException e) {
             System.out.println("ERROR CODE:"+e.getErrorCode()+" "+e.getMessage());
         }
@@ -55,7 +55,12 @@ public class Controller {
         }
         try {
             String className = (String) getProperties().get("inMemoryStorageDAO");
-            inMemoryStorageDAO = (InMemoryStorageDAO) Class.forName(className).newInstance();
+            try{
+            inMemoryStorageDAO = (InMemoryStorageDAO) Class.forName(className).newInstance();}
+            catch (NullPointerException e)
+            {
+                throw new NullPointerException("class name pointing null  check your class name");
+            }
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             throw new LogicalException("class not found in properties file", errorCodeForClass);
         } catch (LogicalException e) {

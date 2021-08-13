@@ -6,11 +6,10 @@ import logicalLayer.Controller;
 import logicalLayer.LogicalException;
 import logicalLayer.LogicalHandler;
 import persistence.DBUtil;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 public class  BankingManagementSystem {
-    public static void main(String[] args) throws SQLException, LogicalException {
+    public static void main(String[] args) throws  LogicalException {
         InputHandler inputHandler=new InputHandler();
         LogicalHandler.getInstance().initialiseHashMap();
         System.out.println("welcome to banking management system");
@@ -28,7 +27,6 @@ public class  BankingManagementSystem {
                     }
                 break;
                 case 2: {
-                    System.out.println("enter customer id");
                     long customer_id = inputHandler.getCustomerId();
                     System.out.println("enter balance");
                     double balance = inputHandler.getBalance();
@@ -36,7 +34,6 @@ public class  BankingManagementSystem {
                    }
                 break;
                 case 3:
-                    System.out.println("enter customer id");
                     long customer_id = inputHandler.getCustomerId();
                     try {
                         HashMap<Long, Account> accountInfo = Controller.getInMemoryStorageDAOHandler().getAccountsInfo(customer_id);

@@ -2,7 +2,6 @@ package logicalLayer;
 import bankingManagement.Account;
 import bankingManagement.Customer;
 import persistence.*;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,7 +16,7 @@ public class LogicalHandler {
         return logicalHandler;
     }
 
-    public void initialiseHashMap() throws SQLException,LogicalException{
+    public void initialiseHashMap() throws LogicalException{
         //initially store customer table and account table in hashmap
         try {
             //get all customers and store in customer HashMap
@@ -27,15 +26,15 @@ public class LogicalHandler {
             //get all Accounts and store in Hashmap account HashMap
             ArrayList<Account> accounts = Controller.getPersistenceDAOHandler().selectAllAccounts();
             Controller.getInMemoryStorageDAOHandler().storeAccountsInAccountHashMap(accounts);
-        } catch (PersistenceException e) {
+        } catch (PersistenceException  e) {
             System.out.println("ERROR CODE:"+e.getErrorCode() + " " + e.getMessage());
         }
 
     }
-    public void handleNewCustomer(ArrayList<Customer> customers, ArrayList<Account> accounts) throws SQLException,LogicalException{
+    public void handleNewCustomer(ArrayList<Customer> customers, ArrayList<Account> accounts) throws LogicalException{
         try {
             //insert customers in customer table and get generated customer ids
-            ArrayList<Long> customer_ids = Controller.getPersistenceDAOHandler().addCustomer(customers);
+            ArrayList<Long> customer_ids = Controller.getPersistenceDAOHandler().addCustomers(customers);
 
             //map the inserted customer id and matching account info
             HashMap<Long, Account> account = getAccounts(customer_ids, accounts);
@@ -58,7 +57,7 @@ public class LogicalHandler {
             System.out.println("ERROR CODE:"+e.getErrorCode() + ":" + e.getMessage());
         }
       }
-    public void addNewAccountForExistingCustomer(long customer_id,double balance) throws SQLException,LogicalException {
+    public void addNewAccountForExistingCustomer(long customer_id,double balance) throws LogicalException {
         try {
             //add new account for existing customer
             Controller.getPersistenceDAOHandler().addAccount(customer_id, balance);
@@ -68,7 +67,8 @@ public class LogicalHandler {
 
             //store in account hashMap
             Controller.getInMemoryStorageDAOHandler().storeAccountInAccountHashMap(account);
-        } catch (PersistenceException e) {
+        }
+        catch (PersistenceException e) {
             System.out.println("ERROR CODE:"+e.getErrorCode() + " " + e.getMessage());
         }
 

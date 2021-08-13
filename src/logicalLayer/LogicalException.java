@@ -11,4 +11,9 @@ public class LogicalException extends Exception{
     public int getErrorCode() {
         return errorCode;
     }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
 }

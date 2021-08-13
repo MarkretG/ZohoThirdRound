@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PersistenceDAOImpl implements PersistenceDAO{
 
+public class PersistenceDAOImpl implements PersistenceDAO{
     private final int  errorCodeForSqlInsertQuery=402;
     private final int  errorCodeForSqlSelectQuery=403;
     @Override
-    public ArrayList<Long> addCustomer(ArrayList<Customer> customers)throws SQLException, PersistenceException {
+    public ArrayList<Long> addCustomers(ArrayList<Customer> customers)throws  PersistenceException {
         ArrayList<Long> customer_ids = new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query = "insert into customer_info(name,age,phone) values(?,?,?)";
@@ -35,7 +35,7 @@ public class PersistenceDAOImpl implements PersistenceDAO{
     }
 
     @Override
-    public ArrayList<Customer> selectCustomers(ArrayList<Long> customer_ids) throws SQLException, PersistenceException {
+    public ArrayList<Customer> selectCustomers(ArrayList<Long> customer_ids) throws  PersistenceException {
         ArrayList<Customer> customers=new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query="select customer_id,name from customer_info where customer_id in (?)";
@@ -60,7 +60,7 @@ public class PersistenceDAOImpl implements PersistenceDAO{
 
 
     @Override
-    public ArrayList<Customer> selectAllCustomers() throws SQLException, PersistenceException {
+    public ArrayList<Customer> selectAllCustomers() throws  PersistenceException {
         ArrayList<Customer> customers = new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query = "select customer_id,name from customer_info";
@@ -80,7 +80,7 @@ public class PersistenceDAOImpl implements PersistenceDAO{
     }
 
     @Override
-    public  void addAccount(long customer_id, double balance)throws SQLException, PersistenceException {
+    public  void addAccount(long customer_id, double balance)throws  PersistenceException {
         Connection connection = DBUtil.getConnection();
         String query = "insert into account_info(customer_id,balance) values(?,?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -93,7 +93,7 @@ public class PersistenceDAOImpl implements PersistenceDAO{
     }
 
     @Override
-    public ArrayList<Long> addAccounts(HashMap<Long, Account> account)throws SQLException, PersistenceException {
+    public ArrayList<Long> addAccounts(HashMap<Long, Account> account)throws  PersistenceException {
         ArrayList<Long> customer_ids = new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query = "insert into account_info(customer_id,balance) values(?,?)";
@@ -119,7 +119,7 @@ public class PersistenceDAOImpl implements PersistenceDAO{
     }
 
     @Override
-    public ArrayList<Account> selectAccounts(ArrayList<Long> customer_ids) throws SQLException, PersistenceException {
+    public ArrayList<Account> selectAccounts(ArrayList<Long> customer_ids) throws PersistenceException {
         ArrayList<Account> accounts = new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query = "select * from  account_info where customer_id in (?)";
@@ -143,7 +143,7 @@ public class PersistenceDAOImpl implements PersistenceDAO{
     }
 
     @Override
-    public Account selectAccount(long customer_id) throws SQLException, PersistenceException {
+    public Account selectAccount(long customer_id) throws  PersistenceException {
         Account account = new Account();
         Connection connection = DBUtil.getConnection();
         try (Statement statement = connection.createStatement();
@@ -161,7 +161,7 @@ public class PersistenceDAOImpl implements PersistenceDAO{
 
 
     @Override
-    public ArrayList<Account> selectAllAccounts()throws SQLException, PersistenceException {
+    public ArrayList<Account> selectAllAccounts()throws  PersistenceException {
         ArrayList<Account> accounts = new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         try (Statement statement = connection.createStatement();
