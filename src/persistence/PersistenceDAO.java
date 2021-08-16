@@ -24,5 +24,11 @@ public interface PersistenceDAO{
     //select All Accounts
     ArrayList<Account> selectAllAccounts()throws  PersistenceException;
 
+    void updateCustomer();
+
+    void updateAccount(long customer_id,long account_id) throws  PersistenceException;
+
+    void deleteAccount();
+
 
 }

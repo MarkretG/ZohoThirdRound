@@ -41,5 +41,13 @@ public class InMemoryStorageDAOImpl implements InMemoryStorageDAO {
       return account;
     }
 
+    @Override
+    public HashMap<Long, String> getCustomerHashMap() {
+        return customerHashMap;
+    }
 
+    @Override
+    public HashMap<Long, HashMap<Long, Account>> getAccountHashMap() {
+        return accountInfoHashMap;
+    }
 }

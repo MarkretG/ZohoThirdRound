@@ -1,12 +1,13 @@
 package logicalLayer;
 import bankingManagement.Account;
+import bankingManagement.Admin;
 import bankingManagement.Customer;
+import inMemoryStorageHandling.AccountNotFoundException;
 import persistence.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.Map;
 public class LogicalHandler {
-
     private static LogicalHandler logicalHandler = null;
 
     public static LogicalHandler getInstance() {
@@ -97,6 +98,64 @@ public class LogicalHandler {
             account.put(customer_ids.get(i), accounts.get(i));
         }
         return account;
+
+    }
+    public Admin initialiseAdmin()
+    {
+        Admin admin=new Admin();
+        admin.setAdminName("dhuruv");
+        admin.setAdminPassword("dhuruv@26");
+        return admin;
+    }
+  public Admin getAdminObject(String name,String password)
+    {
+        Admin admin=new Admin();
+        admin.setAdminName(name);
+        admin.setAdminPassword(password);
+        return admin;
+    }
+    public boolean verifyAdmin(Admin admin,Admin adminLogin)
+    {
+        if(admin.getAdminName().equals(adminLogin.getAdminName())&&admin.getAdminPassword().equals(adminLogin.getAdminPassword())) {
+            System.out.println("login successfully");
+            return true;
+        }
+        return false;
+    }
+    public  Customer getCustomerLogin(long customer_id,String name)
+    {
+        Customer customer=new Customer();
+        customer.setCustomer_id(customer_id);
+        customer.setName(name);
+        return customer;
+    }
+    public boolean verifyCustomer(Customer customer) throws  LogicalException
+    {
+        HashMap<Long,String> customerHashMap=Controller.getInMemoryStorageDAOHandler().getCustomerHashMap();
+        for(Map.Entry<Long,String> entry:customerHashMap.entrySet())
+        {
+            if(entry.getKey()==customer.getCustomer_id()&&entry.getValue().equals(customer.getName()))
+            {
+                System.out.println("login successfully");
+                return true;
+            }
+        }
+        return false;
+    }
+    public void deleteAccount(long customerId,long accountId) throws LogicalException, PersistenceException, AccountNotFoundException {
+       Controller.getPersistenceDAOHandler().updateAccount(customerId,accountId);
+       HashMap<Long,Account> accountHashMap=Controller.getInMemoryStorageDAOHandler().getAccountsInfo(customerId);
+       for (Map.Entry<Long,Account> entry: accountHashMap.entrySet())
+       {
+           if(entry.getKey()==accountId)
+           {
+               accountHashMap.remove(entry.getKey(),entry.getValue());
+               break;
+           }
+       }
+    }
+    public void withdraw()
+    {
 
     }
 

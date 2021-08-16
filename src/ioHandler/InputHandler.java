@@ -1,12 +1,23 @@
 package ioHandler;
 import bankingManagement.Account;
+import bankingManagement.Admin;
 import bankingManagement.Customer;
 import logicalLayer.LogicalHandler;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class InputHandler {
+
+    private static InputHandler inputHandler = null;
+
+    public static InputHandler getInstance() {
+        if (inputHandler == null) {
+            inputHandler = new InputHandler();
+        }
+        return inputHandler;
+    }
     private Scanner scanner=new Scanner(System.in);
     long customerId;
+    long accountId;
     int choice;
     double balance;
     public ArrayList<Customer> getCustomerInfo() {
@@ -51,6 +62,12 @@ public class InputHandler {
         return customerId;
     }
 
+    public long getAccountId() {
+        System.out.println("enter account_id");
+        accountId=scanner.nextLong();
+        return accountId;
+    }
+
     public int getChoice() {
         choice=scanner.nextInt();
         return choice;
@@ -63,4 +80,25 @@ public class InputHandler {
     public void closeScanner() {
         scanner.close();
     }
+
+    public Admin getAdminInfo()
+    {
+        System.out.println("enter admin name");
+        scanner.nextLine();
+        String name=scanner.nextLine();
+        System.out.println("admin password");
+        String password=scanner.nextLine();
+        return LogicalHandler.getInstance().getAdminObject(name,password);
+    }
+    public Customer getCustomerLoginInfo()
+    {
+        System.out.println("enter customer Id");
+        long customer_id=scanner.nextLong();
+        System.out.println("enter customer name");
+        String name= scanner.nextLine();
+        return LogicalHandler.getInstance().getCustomerLogin(customer_id,name);
+    }
+
+
+
 }

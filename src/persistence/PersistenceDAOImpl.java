@@ -5,13 +5,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+public class PersistenceDAOImpl implements PersistenceDAO {
+    private final int errorCodeForSqlInsertQuery = 402;
+    private final int errorCodeForSqlSelectQuery = 403;
 
-
-public class PersistenceDAOImpl implements PersistenceDAO{
-    private final int  errorCodeForSqlInsertQuery=402;
-    private final int  errorCodeForSqlSelectQuery=403;
     @Override
-    public ArrayList<Long> addCustomers(ArrayList<Customer> customers)throws  PersistenceException {
+    public ArrayList<Long> addCustomers(ArrayList<Customer> customers) throws PersistenceException {
         ArrayList<Long> customer_ids = new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query = "insert into customer_info(name,age,phone) values(?,?,?)";
@@ -28,6 +27,7 @@ public class PersistenceDAOImpl implements PersistenceDAO{
             if (resultSet.next()) {
                 customer_ids.add(resultSet.getLong(1));
             }
+            resultSet.close();
         } catch (SQLException e) {
             throw new PersistenceException("Exception occur in insert query in customer table", errorCodeForSqlInsertQuery);
         }
@@ -35,35 +35,23 @@ public class PersistenceDAOImpl implements PersistenceDAO{
     }
 
     @Override
-    public ArrayList<Customer> selectCustomers(ArrayList<Long> customer_ids) throws  PersistenceException {
-        ArrayList<Customer> customers=new ArrayList<>();
+    public ArrayList<Customer> selectCustomers(ArrayList<Long> customer_ids) throws PersistenceException {
+        ArrayList<Customer> customers = new ArrayList<>();
         Connection connection = DBUtil.getConnection();
-        String query="select customer_id,name from customer_info where customer_id in (?)";
-        try ( PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            Object[] ids = new Object[customer_ids.size()];
-            for (int i = 0; i <customer_ids.size(); i++) {
-                ids[i] = Long.parseLong(String.valueOf(customer_ids.get(i)));
-            }
-            try {
-                //Array array = connection.createArrayOf("bigint",ids);
-                preparedStatement.setArray(1, connection.createArrayOf("bigint", ids));
-            }
-            catch (Exception e)
-            {
-                System.out.println(e.getMessage());
+        String query = "select customer_id,name from customer_info where customer_id in (?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            for (Long ids : customer_ids) {
+                preparedStatement.setLong(1, ids);
             }
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Customer customerList=new Customer();
+                Customer customerList = new Customer();
                 customerList.setCustomer_id(resultSet.getLong(1));
                 customerList.setName(resultSet.getString(2));
                 customers.add(customerList);
             }
-        }
-        catch (SQLException e)
-        {
-            throw new PersistenceException("Exception occur in select query for customer table",errorCodeForSqlSelectQuery);
+        } catch (SQLException e) {
+            throw new PersistenceException("Exception occur in select query for customer table", errorCodeForSqlSelectQuery);
         }
         return customers;
 
@@ -71,7 +59,7 @@ public class PersistenceDAOImpl implements PersistenceDAO{
 
 
     @Override
-    public ArrayList<Customer> selectAllCustomers() throws  PersistenceException {
+    public ArrayList<Customer> selectAllCustomers() throws PersistenceException {
         ArrayList<Customer> customers = new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query = "select customer_id,name from customer_info";
@@ -91,7 +79,7 @@ public class PersistenceDAOImpl implements PersistenceDAO{
     }
 
     @Override
-    public  void addAccount(long customer_id, double balance)throws  PersistenceException {
+    public void addAccount(long customer_id, double balance) throws PersistenceException {
         Connection connection = DBUtil.getConnection();
         String query = "insert into account_info(customer_id,balance) values(?,?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -99,17 +87,18 @@ public class PersistenceDAOImpl implements PersistenceDAO{
             preparedStatement.setDouble(2, balance);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new PersistenceException("Exception occur in insert query for add account",errorCodeForSqlInsertQuery);
+            throw new PersistenceException("Exception occur in insert query for add account", errorCodeForSqlInsertQuery);
         }
     }
 
     @Override
-    public ArrayList<Long> addAccounts(HashMap<Long, Account> account)throws  PersistenceException {
-        ArrayList<Long> customer_ids = new ArrayList<>();
+    public ArrayList<Long> addAccounts(HashMap<Long, Account> account) throws PersistenceException {
+        ArrayList<Long> account_ids = new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         String query = "insert into account_info(customer_id,balance) values(?,?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             for (Map.Entry<Long, Account> entry : account.entrySet()) {
+                System.out.println(entry.getKey());
                 preparedStatement.setLong(1, entry.getKey());
                 // preparedStatement.setLong(2, account.getAccount_id());
                 preparedStatement.setDouble(2, entry.getValue().getBalance());
@@ -117,27 +106,24 @@ public class PersistenceDAOImpl implements PersistenceDAO{
             }
             preparedStatement.executeBatch();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
-
             if (resultSet.next()) {
-                customer_ids.add(resultSet.getLong(1));
+                account_ids.add(resultSet.getLong(1));
             }
-            resultSet.close();
         } catch (SQLException e) {
             throw new PersistenceException("Exception occur in insert query for add account ", errorCodeForSqlInsertQuery);
         }
-        return customer_ids;
-
+        return account_ids;
     }
 
     @Override
-    public ArrayList<Account> selectAccounts(ArrayList<Long> customer_ids) throws PersistenceException {
+    public ArrayList<Account> selectAccounts(ArrayList<Long> account_ids) throws PersistenceException {
         ArrayList<Account> accounts = new ArrayList<>();
         Connection connection = DBUtil.getConnection();
-        String query = "select * from  account_info where customer_id in (?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query))
-        {
-            Array array = connection.createArrayOf("BIGINT", customer_ids.toArray());
-            preparedStatement.setArray(1, array);
+        String query = "select customer_id,account_id,balance  from  account_info where account_id in (?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            for (Long account_id : account_ids) {
+                preparedStatement.setLong(1, account_id);
+            }
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Account account1 = new Account();
@@ -146,7 +132,6 @@ public class PersistenceDAOImpl implements PersistenceDAO{
                 account1.setBalance(resultSet.getDouble(3));
                 accounts.add(account1);
             }
-
         } catch (SQLException e) {
             throw new PersistenceException("Exception occur in insert query in account table", errorCodeForSqlInsertQuery);
         }
@@ -154,7 +139,7 @@ public class PersistenceDAOImpl implements PersistenceDAO{
     }
 
     @Override
-    public Account selectAccount(long customer_id) throws  PersistenceException {
+    public Account selectAccount(long customer_id) throws PersistenceException {
         Account account = new Account();
         Connection connection = DBUtil.getConnection();
         try (Statement statement = connection.createStatement();
@@ -172,11 +157,11 @@ public class PersistenceDAOImpl implements PersistenceDAO{
 
 
     @Override
-    public ArrayList<Account> selectAllAccounts()throws  PersistenceException {
+    public ArrayList<Account> selectAllAccounts() throws PersistenceException {
         ArrayList<Account> accounts = new ArrayList<>();
         Connection connection = DBUtil.getConnection();
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("select * from  account_info")) {
+             ResultSet resultSet = statement.executeQuery("select * from  account_info where status='active'")) {
             while (resultSet.next()) {
                 Account account = new Account();
                 account.setCustomer_id(resultSet.getLong(1));
@@ -189,5 +174,30 @@ public class PersistenceDAOImpl implements PersistenceDAO{
         }
 
         return accounts;
+    }
+
+
+    @Override
+    public void updateCustomer() {
+
+
+
+    }
+
+    @Override
+    public void updateAccount(long customer_id,long account_id) throws PersistenceException{
+        Connection connection = DBUtil.getConnection();
+        String query = "update account_info set status='inactivate' where customer_id=customer_id and account_id=account_id";
+        try( Statement statement = connection.createStatement()) {
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            throw new PersistenceException("Exception occur in update query for update account", errorCodeForSqlInsertQuery);
+        }
+
+    }
+
+    @Override
+    public void deleteAccount() {
+
     }
 }

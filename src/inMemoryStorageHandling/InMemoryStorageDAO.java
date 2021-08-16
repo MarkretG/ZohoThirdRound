@@ -17,4 +17,8 @@ public interface InMemoryStorageDAO {
     //return hashmap particular customer_id
     HashMap<Long,Account> getAccountsInfo(long customer_id)throws AccountNotFoundException;
 
+    HashMap<Long, String> getCustomerHashMap();
+
+    HashMap<Long,HashMap<Long,Account>> getAccountHashMap();
+
 }
